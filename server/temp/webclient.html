@@ -1,0 +1,38 @@
+
+<div id="reply_box">
+			<input type="text" id="reply_msg">
+			<input type="button" id="reply_btn" onclick="send()" value="send">
+</div>
+
+<div id="dialogue">
+</div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+	const messageBox = d3.select("#reply_msg");
+	const messageBtn = d3.select("#reply_btn");
+
+	var socket = new WebSocket('ws://localhost:3001')
+
+	socket.onmessage=onmessage
+	//try to reconnect if socket is CLOSED
+	setInterval(function(){
+		if(socket.readyState==3){
+			socket = new WebSocket('ws://localhost:3001')
+		}
+	},2000)
+
+	function send(){
+		let message = messageBox.property("value")
+		socket.send(message)
+		messageBox.property("value","")
+	}
+
+	function onmessage(evt){
+		console.log(evt.data)
+		d3.select("#dialogue").append("p").text(evt.data)
+	}
+</script>
+
+
