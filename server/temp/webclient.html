@@ -13,13 +13,13 @@
 	const messageBox = d3.select("#reply_msg");
 	const messageBtn = d3.select("#reply_btn");
 
-	var socket = new WebSocket('ws://localhost:3001?username=test')
-
-	socket.onmessage=onmessage
+	var socket
+	
 	//try to reconnect if socket is CLOSED
 	setInterval(function(){
 		if(socket.readyState==3){
 			socket = new WebSocket('ws://localhost:3001?username=test')
+			socket.onmessage=onmessage
 		}
 	},2000)
 
