@@ -1,0 +1,6 @@
+<textarea [(ngModel)] = "message" ></textarea>
+<input type="button" value="send" (click)="send(message)">
+<hr>
+<ul>
+    <li *ngFor="let m of messages">{{m}}</li>
+</ul>
