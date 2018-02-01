@@ -39,7 +39,7 @@ export class WebSocketService {
           cb(true)
         }
       })
-    },1000)
+    },2000)
     
   }
 

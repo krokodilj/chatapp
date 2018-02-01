@@ -1,10 +1,18 @@
-<div class="text-center" >
-    <textarea [(ngModel)] = "message" ></textarea>
-    <input type="button" value="send" (click)="send(message)" [disabled]="error">
+
+<div style="padding : 20px ;" >
+    
+    <div style="margin: auto ; width:50%">
+        <mat-form-field>
+                <textarea matInput [(ngModel)] = "message" [disabled]="error"></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="send(message)" [disabled]="error">send</button>
+
+        <mat-list>
+            <mat-list-item *ngFor="let m of messages">
+                <span>{{m.sentBy}} : </span>
+                <span>{{m.message}}</span>
+            </mat-list-item>
+        </mat-list>
+    </div>
 </div>
-
-<hr>
-
-<ul>
-    <li *ngFor="let m of messages">{{m}}</li>
-</ul>

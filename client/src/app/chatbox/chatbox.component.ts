@@ -37,7 +37,7 @@ export class ChatboxComponent implements OnInit {
   private subscription={
     onNext: (msgEvt) => {
       let data = JSON.parse(msgEvt.data)
-      this.messages.unshift(`${data.sentBy}\t>>>\t${data.message}`)
+      this.messages.unshift(data)
     },
     onError:(errEvt)=>{
       console.log(errEvt)
@@ -58,14 +58,14 @@ export class ChatboxComponent implements OnInit {
 
   private onDisconnect(){
     this.error=true
-    this.messages.unshift('~~~~ disconnected from server ~~~~~')
+    this.messages.unshift({message:'~~~~ disconnected from server ~~~~~'})
 
   }
 
   private onReconnect(){
-    this.messages.unshift('~~~ reconnected ~~~~')
+    this.messages.unshift({message:'~~~ reconnected ~~~~'})
     this.error=false
-    this.getAndSubscribe()}
+    this.getAndSubscribe()
   }
 
 
