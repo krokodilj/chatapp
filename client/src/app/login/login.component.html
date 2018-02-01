@@ -1,4 +1,6 @@
 <div class="text-center">
     <input type="text" placeholder="enter username" [(ngModel)]="username">
     <input type="button" value="connect" (click)="connect(username)">
+    <br>
+    <span [hidden]="errorHidden" > can't connect to chat server</span>
 </div>

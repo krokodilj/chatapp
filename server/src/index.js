@@ -16,6 +16,7 @@ const wss = new ws.Server({
 
 var USERS={}
 var count=0
+
 wss.on('connection',socket =>{
 
 	let id = socket.upgradeReq.id
@@ -31,16 +32,21 @@ wss.on('connection',socket =>{
 	console.log(`user connected id=${id}`)
 	console.log("allusers : "+Object.keys(USERS))
 
-	socket.send(`SERVER >> hi , ${id}`)
+	socket.send(JSON.stringify({
+		sentBy:"SERVER",
+		message:`hi , ${id}`
+	}))
+	wss.broadcast("SERVER",`User ${id} connected`)
 
 	//EVENTS
 	socket.on('message', message =>{
 		console.log(`new message ${socket.id}: ${message}`)
-		wss.broadcast(message)
+		wss.broadcast(socket.id,message)
 	})
 
 	socket.on('close',_=>{
 		delete USERS[socket.id]
+		wss.broadcast("SERVER",`User ${id} disconnected`)
 		console.log(`user disconnected id=${socket.id}`)
 		console.log("allusers : "+Object.keys(USERS))
 	})
@@ -54,9 +60,12 @@ wss.on('error',e=>{
 	console.log("server error : " + e)
 })
 
-wss.broadcast=(message)=>{
+wss.broadcast=(sender,message)=>{
 	for(let socket of wss.clients){
-		socket.send(message)
+		socket.send(JSON.stringify({
+			sentBy:sender,
+			message:message
+		}))
 	}
 }
 

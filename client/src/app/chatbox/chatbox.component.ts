@@ -12,6 +12,7 @@ export class ChatboxComponent implements OnInit {
   message: String
   messages = []
   socket: Subject<any>
+  error=false
 
   private send(message: String): void{
     this.socket.next(message)
@@ -21,22 +22,50 @@ export class ChatboxComponent implements OnInit {
   constructor(private ws: WebSocketService) { }
 
   ngOnInit() {
-    this.socket = this.ws.getInstance()
-    this.socket.subscribe( 
-      (msgEvt) => {
-        this.messages.unshift(msgEvt.data)
-      },(errEvt)=>{
-        console.log(errEvt)
-        //TODO
-      }, () =>{
-        console.log("closed")
-        //TODO 
-      }
-    )
+    this.getAndSubscribe()
   }
 
   ngOnDestroy(){
     this.socket.unsubscribe()
+  }
+  
+  private getAndSubscribe():void{
+    this.socket=this.ws.getInstance()
+    this.socket.subscribe(this.subscription.onNext,this.subscription.onError,this.subscription.onCompleted)
+  }
+
+  private subscription={
+    onNext: (msgEvt) => {
+      let data = JSON.parse(msgEvt.data)
+      this.messages.unshift(`${data.sentBy}\t>>>\t${data.message}`)
+    },
+    onError:(errEvt)=>{
+      console.log(errEvt)
+      this.ws.reconnect((isConnected)=>{
+        if(isConnected) this.getAndSubscribe()
+      })
+    },
+    onCompleted: () =>{
+      console.log("closed")
+      this.onDisconnect()
+      this.ws.reconnect((isConnected)=>{
+        if(isConnected) {    
+          this.onReconnect()      
+        }
+      })
+    }
+  }
+
+  private onDisconnect(){
+    this.error=true
+    this.messages.unshift('~~~~ disconnected from server ~~~~~')
+
+  }
+
+  private onReconnect(){
+    this.messages.unshift('~~~ reconnected ~~~~')
+    this.error=false
+    this.getAndSubscribe()}
   }
 
 

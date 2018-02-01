@@ -1,6 +1,6 @@
-<div class="text-center">
+<div class="text-center" >
     <textarea [(ngModel)] = "message" ></textarea>
-    <input type="button" value="send" (click)="send(message)">
+    <input type="button" value="send" (click)="send(message)" [disabled]="error">
 </div>
 
 <hr>

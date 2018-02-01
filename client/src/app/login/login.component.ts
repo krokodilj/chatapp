@@ -11,13 +11,19 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   username=""
-  connectionError=false
+  errorHidden=true
 
   constructor(private ws: WebSocketService,private router: Router) { }
 
   private connect(username: String): void {
-    this.ws.connect(username)
-    this.router.navigate(['/chat'])
+    this.ws.connect(username,(isConnected)=>{
+      if(!isConnected){
+        this.errorHidden=false
+      }else{
+        this.router.navigate(['/chat'])
+      }      
+    })
+    
   }
 
   ngOnInit() { }
