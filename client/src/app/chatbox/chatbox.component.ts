@@ -11,7 +11,7 @@ export class ChatboxComponent implements OnInit {
 
   message: String
   messages = []
-  socket: Subject<String>
+  socket: Subject<any>
 
   private send(message: String): void{
     this.socket.next(message)
@@ -21,10 +21,18 @@ export class ChatboxComponent implements OnInit {
   constructor(private ws: WebSocketService) { }
 
   ngOnInit() {
-    this.socket = this.ws.connect("asd")
-    this.socket.subscribe( (val) => {
-      this.messages.unshift(val.data)
-    })
+    this.socket = this.ws.getInstance()
+    this.socket.subscribe( 
+      (msgEvt) => {
+        this.messages.unshift(msgEvt.data)
+      },(errEvt)=>{
+        console.log(errEvt)
+        //TODO
+      }, () =>{
+        console.log("closed")
+        //TODO 
+      }
+    )
   }
 
   ngOnDestroy(){

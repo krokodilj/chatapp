@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  username=""
+  connectionError=false
+
   constructor(private ws: WebSocketService,private router: Router) { }
 
   private connect(username: String): void {

@@ -4,35 +4,42 @@ import { Subject , Observable , Observer} from 'rxjs';
 @Injectable()
 export class WebSocketService {
   
-  private socket: Subject<String>;
-  
-  public connect(username: String): Subject<String> {
-    if(!this.socket) this.socket=this.create('ws://localhost:3001',username);
-    return this.socket;
+  private url = 'ws://localhost:3001'
+
+  private socket: WebSocket
+
+  private subject: Subject<String>
+
+  public connect(username: String) {
+    this.socket = new WebSocket(`${this.url}/?username=${username}`);
+    this.subject = this.createSubject()
   }
 
-  private create(url,username): Subject<String>{
+  public getInstance(): Subject<String> {
+    return this.subject;
+  }
 
-    let ws = new WebSocket(`${url}/?username=${username}`);
+  private createSubject(): Subject<String>{
 
     let observer = {
       next: (data:String) =>{
-        if(ws.readyState==WebSocket.OPEN)
-          ws.send(data)
+        this.socket.send(data)
       }
     }
 
     let observable = Observable.create(
       (obs: Observer<String>)=>{
-        ws.onmessage = obs.next.bind(obs);
-        ws.onerror = obs.error.bind(obs);
-        ws.onclose = obs.complete.bind(obs);
+        this.socket.onmessage = obs.next.bind(obs);
+        this.socket.onerror = obs.error.bind(obs);
+        this.socket.onclose = obs.complete.bind(obs);
 
-        return ws.close.bind(ws);
+        return this.socket.close.bind(this.socket);
       }
     )
 
-    return Subject.create(observer,observable);
+    let subject = Subject.create(observer,observable);
+
+    return subject
   }
 
   constructor() { }

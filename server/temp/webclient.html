@@ -17,9 +17,10 @@
 	
 	//try to reconnect if socket is CLOSED
 	setInterval(function(){
-		if(socket.readyState==3){
+		if(!socket || socket.readyState==3){
 			socket = new WebSocket('ws://localhost:3001?username=test')
 			socket.onmessage=onmessage
+			socket.onclose=onclose
 		}
 	},2000)
 
@@ -29,8 +30,12 @@
 		messageBox.property("value","")
 	}
 
+	function onclose(evt){
+		console.log(evt)
+	}
+	
 	function onmessage(evt){
-		console.log(evt.data)
+		console.log(evt)
 		d3.select("#dialogue").append("p").text(evt.data)
 	}
 </script>
