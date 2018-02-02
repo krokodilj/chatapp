@@ -1,10 +1,36 @@
 var ws = require('ws')
 var url = require('url')
+var express = require('express')
+var http = require('http')
+var mysql = require("mysql")
 
-const port = 3001
+const config = require('./config/config')
+const app = express()
+const bodyParser = require('body-parser')
+app.use(bodyParser.json());
 
+app.use('/api',(req,res,next)=>{
+	let connection = mysql.createConnection({
+		host: 'localhost',
+		user: 'root',
+		password: 'root',
+		database: 'chatappDB'
+	})
+	connection.connect((err)=>{
+		if(err){
+			console.log("MYSQL CONNECTION ERROR")		
+			res.status(500).send()
+		}
+		req.connection=connection
+		next()
+	})	
+})
+
+app.use('/api/user',require('./api/user.api'))
+
+const server = http.createServer(app)
 const wss = new ws.Server({
-	port: port ,
+	server: server ,
 	verifyClient: (info,cb) =>{
 		//extract username from url
 		let username = url.parse(info.req.url,true).query.username
@@ -19,24 +45,26 @@ var count=0
 
 wss.on('connection',socket =>{
 
-	let id = socket.upgradeReq.id
-	//check if username is available
-	if(Object.keys(USERS).includes(id)){
-		socket.send(`SERVER >> Username '${id}' not available`)
-		id=id+count++
-		socket.send(`SERVER >> Your username is set to '${id}'`)
-	}
-	socket.id=id
-	USERS[id] = socket.id
+	let username = socket.upgradeReq.id
 
-	console.log(`user connected id=${id}`)
+	//check if username is available
+	if(Object.keys(USERS).includes(username)){
+		socket.send(`SERVER >> Username '${username}' not available`)
+		username=username+count++
+		socket.send(`SERVER >> Your username is set to '${username}'`)
+	}
+
+	socket.id=username
+	USERS[username] = socket
+
+	console.log(`user connected id=${username}`)
 	console.log("allusers : "+Object.keys(USERS))
 
 	socket.send(JSON.stringify({
 		sentBy:"SERVER",
-		message:`hi , ${id}`
+		message:`hi , ${username}`
 	}))
-	wss.broadcast("SERVER",`User ${id} connected`)
+	wss.broadcast("SERVER",`User ${username} connected`)
 
 	//EVENTS
 	socket.on('message', message =>{
@@ -46,7 +74,7 @@ wss.on('connection',socket =>{
 
 	socket.on('close',_=>{
 		delete USERS[socket.id]
-		wss.broadcast("SERVER",`User ${id} disconnected`)
+		wss.broadcast("SERVER",`User ${username} disconnected`)
 		console.log(`user disconnected id=${socket.id}`)
 		console.log("allusers : "+Object.keys(USERS))
 	})
@@ -69,4 +97,6 @@ wss.broadcast=(sender,message)=>{
 	}
 }
 
-console.log("server started\n")
+server.listen(config.port,()=>{
+	console.log(`server started on port ${config.port} . . .`)
+})
