@@ -2,30 +2,15 @@ var ws = require('ws')
 var url = require('url')
 var express = require('express')
 var http = require('http')
-var mysql = require("mysql")
 
 const config = require('./config/config')
 const app = express()
 const bodyParser = require('body-parser')
+
 app.use(bodyParser.json());
-
-app.use('/api',(req,res,next)=>{
-	let connection = mysql.createConnection({
-		host: 'localhost',
-		user: 'root',
-		password: 'root',
-		database: 'chatappDB'
-	})
-	connection.connect((err)=>{
-		if(err){
-			console.log("MYSQL CONNECTION ERROR")		
-			res.status(500).send()
-		}
-		req.connection=connection
-		next()
-	})	
-})
-
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use('/api/user',require('./api/user.api'))
 
 const server = http.createServer(app)
