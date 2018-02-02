@@ -1,14 +1,20 @@
-
-<div style="padding : 20px ;" >
+<div class="container" >
     
-    <div style="margin: auto ; width:50%">
-        <mat-form-field>
-                <textarea matInput [(ngModel)] = "message" [disabled]="error"></textarea>
-        </mat-form-field>
+    <div class=content>
 
-        <button mat-raised-button color="primary" (click)="send(message)" [disabled]="error">send</button>
+        <div class="message-input">
 
-        <mat-list>
+            <mat-form-field>
+                    <textarea matInput [(ngModel)] = "message" [disabled]="error"></textarea>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="send(message)" [disabled]="error">send</button>
+
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <mat-list class="">
             <mat-list-item *ngFor="let m of messages">
                 <span>{{m.sentBy}} : </span>
                 <span>{{m.message}}</span>

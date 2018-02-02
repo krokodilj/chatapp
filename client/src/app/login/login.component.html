@@ -1,16 +1,25 @@
-<div style="padding : 20px">
-  <mat-card style="  margin: auto; width: 50%;">
-    <mat-card-title>
-      Login
+<div class="container">
+
+  <mat-card class="content">
+
+    <mat-card-title >
+      <span>Login</span>
     </mat-card-title>
 
-    <mat-form-field>
-      <input matInput placeholder="enter username" [(ngModel)]="username">
-    </mat-form-field>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="enter username" [(ngModel)]="username">
+      </mat-form-field>
+    </mat-card-content>
 
-    
-    <mat-card-actions>
+    <mat-card-actions >
         <button mat-raised-button color="primary" (click)="connect(username)" >connect</button>
     </mat-card-actions>
+
+    <mat-card-footer>
+      <span class="err-msg center" [hidden]="errorHidden">cant connect to server</span>
+    </mat-card-footer>
+
   </mat-card>
+
 </div>

@@ -8,7 +8,9 @@ import {
   MatCardModule,
   MatInputModule,
   MatFormFieldModule,
-  MatListModule
+  MatListModule,
+  MatSidenavModule,
+  MatDividerModule
 } from '@angular/material';
 
 import {
@@ -27,7 +29,9 @@ import {
     MatFormFieldModule,
     NoopAnimationsModule,
     BrowserAnimationsModule,
-    MatListModule
+    MatListModule,
+    MatSidenavModule,
+    MatDividerModule
   ],
   exports: [
     MatButtonModule,
@@ -39,7 +43,9 @@ import {
     MatFormFieldModule,
     NoopAnimationsModule,
     BrowserAnimationsModule,
-    MatListModule
+    MatListModule,
+    MatSidenavModule,
+    MatDividerModule
   ]
 })
 export class MaterialModule {}

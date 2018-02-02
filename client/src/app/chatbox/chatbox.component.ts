@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'app-chatbox',
   templateUrl: './chatbox.component.html',
-  styles: []
+  styleUrls: ['./chatbox.component.css']
 })
 export class ChatboxComponent implements OnInit {
 
