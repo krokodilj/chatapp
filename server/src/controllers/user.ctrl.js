@@ -8,18 +8,11 @@ module.exports = {
 
 function save(user,cb){
     connection((err,connection)=>{
-        if(err) {
-            console.log(err)
-            cb(err)
-        }else{
+        if(err) { cb(err) }
+        else{
             connection.query("INSERT INTO user SET ? ;",user,(err,results)=>{
-                if(err) {
-                    console.log(err)
-                    cb(err)
-                }
-                else{
-                    cb(null,results.insertId)
-                }
+                if(err) { cb(err) }
+                else{ cb(null,results.insertId) }
                 connection.release()
             })
         }
@@ -28,18 +21,11 @@ function save(user,cb){
 
 function getOne(id,cb){
     connection((err,connection)=>{
-        if(err) {
-            console.log(err)
-            cb(err)
-        }else{
+        if(err) {cb(err)}
+        else{
             connection.query("SELECT * FROM user WHERE id = ?;",id,(err,results)=>{
-                if(err) {
-                    console.log(err)
-                    cb(err)
-                }
-                else{
-                    cb(null,results[0])
-                }
+                if(err) {cb(err)}
+                else{ cb(null,results[0]) }
                 connection.release()
             })    
         }
@@ -48,21 +34,13 @@ function getOne(id,cb){
 
 function getOneByUsername(username,cb){
     connection((err,connection)=>{
-        if(err) {
-            console.log(err)
-            cb(err)
-        }else{
+        if(err) { cb(err) }
+        else{
             connection.query("SELECT * FROM user WHERE username = ?;",username,(err,results)=>{
-                if(err) {
-                    console.log(err)
-                    cb(err)
-                }
-                else{
-                    cb(null,results[0])
-                }
+                if(err) { cb(err) }
+                else { cb(null,results[0]) }
                 connection.release()
             })    
         }
     })
 }
-

@@ -13,6 +13,13 @@ app.use(bodyParser.urlencoded({
 }));
 app.use('/api/user',require('./api/user.api'))
 
+app.use(function(err,req,res,next){
+	if(!err.status) { 
+		console.log("a"+err)
+		res.status(500).send() }
+	else{ res.status(err.status).send() }
+})
+
 const server = http.createServer(app)
 const wss = new ws.Server({
 	server: server ,
