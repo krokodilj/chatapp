@@ -4,6 +4,7 @@ const router = express.Router()
 const validate = require('express-validation')
 const validation = require('./validation/userApi.validation')
 const userCtrl = require('../controllers/user.ctrl')
+const jwt = require('../core/jwt')
 
 router.post('/',validate(validation.post),(req,res,next)=>{
     let user = req.body
@@ -42,10 +43,8 @@ router.post('/login',validate(validation.login),(req,res,next)=>{
         }else if (user.password!=loginParams.password){
             res.status(401).send()
         }else{
-            //ovde je sve dobro
-            //TODO zavrsi token!
-            token="asdasdasd.asdasd.asdasdasd"
-            res.status(200).json(token).send
+            let token=jwt.createToken(user)
+            res.status(200).json(token).send()
         }
         
     })
