@@ -13,13 +13,21 @@ app.use(bodyParser.urlencoded({
 }));
 app.use('/api/user',require('./api/user.api'))
 
-app.use(function(err,req,res,next){
-	if(!err.status) { 
-		console.log("a"+err)
-		res.status(500).send() }
-	else{ res.status(err.status).send() }
+// err 400
+app.use((err,req,res,next) =>{
+	if( err.status==400 ) 
+		res.status(400).json(err.errors).send()
+	else next(err)
+})
+// err 500
+app.use((err,req,res,next) =>{
+	console.log("b"+err)
+	res.status(500).send()
 })
 
+
+
+//////////KASAPI
 const server = http.createServer(app)
 const wss = new ws.Server({
 	server: server ,

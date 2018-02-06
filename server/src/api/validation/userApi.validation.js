@@ -1,20 +1,26 @@
 const joi = require('joi')
 
+const elements ={
+    username : joi.string().alphanum().min(4).max(20),
+    password : joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+    email : joi.string().email()
+}
+
 module.exports={
     login:{
         body:{
-            username: joi.string().required(),
-            password: joi.string().required()
+            username: elements.username.required(),
+            password: elements.password.required()
         }
     },
-    post:{
+    createUser:{
         body:{
-            username: joi.string().required(),
-            password: joi.string().required(),
-            email   : joi.string().email().required()
+            username: elements.username.required(),
+            password: elements.password.required(),
+            email   : elements.email.required()
         }
     },
-    get:{
+    getUser:{
         params:{
             id: joi.number().required()
         }

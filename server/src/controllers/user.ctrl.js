@@ -9,7 +9,7 @@ module.exports = {
 async function save(user){
     let connection = await getConnection()
     let rows = await connection.query("INSERT INTO user SET ? ;",user)
-    return rows
+    return rows.insertId
 }
 
 async function getOne(id){    
