@@ -1,53 +1,49 @@
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router()
 
 const validate = require('express-validation')
 const validation = require('./validation/userApi.validation')
 const userCtrl = require('../controllers/user.ctrl')
 const jwt = require('../core/jwt')
 
-router.post('/',validate(validation.post),(req,res,next)=>{
-    let user = req.body
-    userCtrl.getOneByUsername(user.username,(err,result)=>{
-        if(err) next(err)
-        else if(result){
-            res.status(409).send()
-        }else{
-            userCtrl.save(user,(err,results)=>{
-                if(err) next(err)
-                else res.status(200).json(results).send()
-            })   
+router.post('/',validate(validation.post),async (req,res,next)=>{
+    try{
+        let user = req.body
+        let user2 = await userCtrl.getOneByUsername(user.username)
+        if(user2) res.status(409).json("Username already in use").send()
+        else {
+            let userId = await userCtrl.save(user)
+            res.status(200).json(userId).send()
         }
-    })
-        
+    }catch(err){
+        next(err)
+    }
 })
 
-router.get('/:id',validate(validation.get),(req,res,next)=>{
-    let id = req.params.id
-    userCtrl.getOne(id,(err,user)=>{
-        if(err) next(err)
-        else if(!user){
-            res.status(404).send()
-        } else{
-            res.status(200).json(user).send()
-        }
-    })
+router.get('/:id',validate(validation.get),async (req,res,next)=>{
+    try{
+        let id = req.params.id    
+        let user = await userCtrl.getOne(id)
+        if( !user ) res.status(404).json("User not found").send()
+        else res.status(200).json(user).send()
+    }catch(err){
+        next(err)
+    }
 })
 
-router.post('/login',validate(validation.login),(req,res,next)=>{
-    let loginParams = req.body
-    userCtrl.getOneByUsername(loginParams.username,(err,user)=>{
-        if(err) next(err)
-        else if(!user){
-            res.status(404).send()
-        }else if (user.password!=loginParams.password){
-            res.status(401).send()
-        }else{
+router.post('/login',validate(validation.login),async (req,res,next)=>{
+    try{
+        let loginParams = req.body
+        let user = await userCtrl.getOneByUsername(loginParams.username)
+        if( !user ) res.status(404).json("User not found").send()
+        else if( user.password != loginParams.password )
+                res.status(401).json("Password does not math").send()
+        else{
             let token=jwt.createToken(user)
             res.status(200).json(token).send()
         }
-        
-    })
+    }catch(err){
+        next(err)
+    }
 })
 
 module.exports = router

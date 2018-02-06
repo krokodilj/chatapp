@@ -1,4 +1,4 @@
-var connection = require('../core/mysqlpool') 
+const getConnection = require('../core/mysqlpool') 
 
 module.exports = {
     save: save,
@@ -6,41 +6,20 @@ module.exports = {
     getOneByUsername : getOneByUsername
 }
 
-function save(user,cb){
-    connection((err,connection)=>{
-        if(err) { cb(err) }
-        else{
-            connection.query("INSERT INTO user SET ? ;",user,(err,results)=>{
-                if(err) { cb(err) }
-                else{ cb(null,results.insertId) }
-                connection.release()
-            })
-        }
-    })
+async function save(user){
+    let connection = await getConnection()
+    let rows = await connection.query("INSERT INTO user SET ? ;",user)
+    return rows
 }
 
-function getOne(id,cb){
-    connection((err,connection)=>{
-        if(err) {cb(err)}
-        else{
-            connection.query("SELECT * FROM user WHERE id = ?;",id,(err,results)=>{
-                if(err) {cb(err)}
-                else{ cb(null,results[0]) }
-                connection.release()
-            })    
-        }
-    })
+async function getOne(id){    
+    let connection = await getConnection()
+    let rows = await connection.query("SELECT * FROM user WHERE id = ?;",id)
+    return rows[0]
 }
 
-function getOneByUsername(username,cb){
-    connection((err,connection)=>{
-        if(err) { cb(err) }
-        else{
-            connection.query("SELECT * FROM user WHERE username = ?;",username,(err,results)=>{
-                if(err) { cb(err) }
-                else { cb(null,results[0]) }
-                connection.release()
-            })    
-        }
-    })
+async function getOneByUsername(username){
+    let connection = await getConnection()
+    let rows = await connection.query("SELECT * FROM user WHERE username = ?;",username)
+    return rows[0]
 }
