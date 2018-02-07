@@ -6,42 +6,30 @@ export class WebSocketService {
   
   private url = 'ws://localhost:3001'
 
-  private username: String
-
   private socket: WebSocket
 
   private subject: Subject<String>
 
-  public connect(username: String,cb: Function) {
-    this.username = username
-
-    this.socket = new WebSocket(`${this.url}/?username=${username}`);
-
-    this.socket.onopen=(evt)=>{
+  public connect(token: String) {    
+      this.socket = new WebSocket(`${this.url}/?token=${token}`);
       this.subject = this.createSubject()
-      cb(true)
-    }    
-
-    this.socket.onerror=()=>{
-      cb(false)
-    }
   }
 
   public getInstance(): Subject<String> {
+    console.log(this.subject)
     return this.subject;
   }
 
-  public reconnect(cb:Function){
-    let interval = setInterval(()=>{
-      this.connect(this.username,(isConnected)=>{
-        if(isConnected){
-          clearInterval(interval)
-          cb(true)
-        }
-      })
-    },2000)
-    
-  }
+  // public reconnect(cb:Function){
+  //   let interval = setInterval(()=>{
+  //     this.connect(this.username,(isConnected)=>{
+  //       if(isConnected){
+  //         clearInterval(interval)
+  //         cb(true)
+  //       }
+  //     })
+  //   },2000)    
+  // }
 
   private createSubject(): Subject<String>{
 

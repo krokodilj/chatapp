@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { WebSocketService } from '../shared/websocket.service'
 import { Subject } from 'rxjs/Subject'
-import { Router } from '@angular/router';
+import { Router } from '@angular/router'
+import { User } from '../_model/user'
+import { AuthService } from '../shared/auth.service'
 
 @Component({
   selector: 'app-login',
@@ -10,20 +12,25 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  username=""
-  errorHidden=true
+  private loginData: User = new User()
+  private error={
+    message: "login error",
+    hidden: true
+  }
 
-  constructor(private ws: WebSocketService,private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private ws: WebSocketService,
+    private router: Router) { }
 
-  private connect(username: String): void {
-    this.ws.connect(username,(isConnected)=>{
-      if(!isConnected){
-        this.errorHidden=false
-      }else{
-        this.router.navigate(['/chat'])
-      }      
-    })
-    
+  private login(loginData: User): void {
+    this.authService
+          .authenticate(loginData)
+          .then( val =>{
+            this.ws.connect(val)
+            this.router.navigate(['/chat'])
+          })
+      
   }
 
   ngOnInit() { }

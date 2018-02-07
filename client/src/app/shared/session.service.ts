@@ -3,34 +3,25 @@ import { Observable , Observer } from 'rxjs';
 
 @Injectable()
 export class SessionService {
-
-
+  
   user={
     username:null,
     id:null
   }
-  dataChange: Observable<any>
-  dataChangeObserver: Observer<any>
 
-  constructor() {
-    this.dataChange = new Observable((observer:Observer<any>) => {
-      this.dataChangeObserver = observer;
-    });
-  }
+  constructor() {}
 
   createSession(token: string){
     localStorage.setItem("chatapp-token",token)
     let data = this.parseJWT(token)
     this.user.id=data.id
     this.user.username = data.username
-    this.dataChangeObserver.next(this.user)
   }
 
   destroySesison(){
     localStorage.removeItem("chatapp-token")
     this.user.id = null
     this.user.username = null
-    this.dataChangeObserver.next(this.user)
   }
 
   activate(){
@@ -40,7 +31,6 @@ export class SessionService {
       let data = this.parseJWT(token)
       this.user.id=data.id
       this.user.username=data.username
-      //this.dataChangeObserver.next(this.user)
     }
   }
 

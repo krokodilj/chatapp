@@ -12,14 +12,14 @@ export class AuthService {
     private http: Http,
     private sessionService: SessionService) { }
 
-  authenticate(user: User): Promise<Response> {
+  authenticate(user: User): Promise<String> {
     let data = JSON.stringify(user)
     return this.http 
               .post('/api/user/login',data,{headers:this.headers})
               .toPromise()
               .then((val: Response) => {
                 this.sessionService.createSession(val.json())
-                return val;
+                return val.json();
               })
   }
 
