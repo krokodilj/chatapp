@@ -1,46 +1,40 @@
-import { Injectable } from '@angular/core';
-import { Subject , Observable , Observer} from 'rxjs';
+import { Injectable } from '@angular/core'
+import { Observable , Observer , BehaviorSubject , Subject} from 'rxjs'
+import { SessionService } from './session.service'
 
 @Injectable()
 export class WebSocketService {
   
   private url = 'ws://localhost:3001'
-
+  public $isConnected: BehaviorSubject<Boolean>
+  public $socket: Subject<any>
   private socket: WebSocket
 
-  private subject: Subject<String>
+  connect(){
+    this.socket = new WebSocket(this.url+`/?token=${this.sessionService.data.token}`)
 
-  public connect(token: String) {    
-      this.socket = new WebSocket(`${this.url}/?token=${token}`);
-      this.subject = this.createSubject()
+    this.socket.onopen = () =>{
+      this.$socket = this.createSubject()
+      this.$isConnected.next(true)
+    }
   }
 
-  public getInstance(): Subject<String> {
-    console.log(this.subject)
-    return this.subject;
+  disconnect() {
+    this.socket.close()
+    this.$socket=null
+    this.$isConnected.next(false)
   }
 
-  // public reconnect(cb:Function){
-  //   let interval = setInterval(()=>{
-  //     this.connect(this.username,(isConnected)=>{
-  //       if(isConnected){
-  //         clearInterval(interval)
-  //         cb(true)
-  //       }
-  //     })
-  //   },2000)    
-  // }
-
-  private createSubject(): Subject<String>{
+  private createSubject(): Subject<any>{
 
     let observer = {
-      next: (data:String) =>{
+      next: (data:any) =>{
         this.socket.send(data)
       }
     }
 
     let observable = Observable.create(
-      (obs: Observer<String>)=>{
+      (obs: Observer<any>)=>{
         this.socket.onmessage = obs.next.bind(obs);
         this.socket.onerror = obs.error.bind(obs);
         this.socket.onclose = obs.complete.bind(obs);
@@ -54,6 +48,10 @@ export class WebSocketService {
     return subject
   }
 
-  constructor() { }
+  constructor(private sessionService: SessionService) {
+
+    this.$isConnected=new BehaviorSubject(false)
+    
+  }
   
 }

@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     this.authService
           .authenticate(loginData)
           .then( val =>{
-            this.ws.connect(val)
+            //this.ws.connect(val)
             this.router.navigate(['/chat'])
           })
       

@@ -1,3 +1,15 @@
 <mat-toolbar color="primary">
-    chat
+    <span>chat</span>
+    <span class="spacer"></span>
+    <span class="spacer"></span>
+    <div [hidden]="!sessionService.data.token">
+        {{(ws.$isConnected  | async) ? "Connected" : "Disconnected" }}
+        <span class="spacer"></span>
+        <mat-slide-toggle (change)="change()" [checked]="ws.$isConnected  | async"></mat-slide-toggle>
+    </div>
+    <span class="spacer"></span>
+    <button mat-raised-button color="primary" routerLink='login' [hidden]="sessionService.data.token">login</button>
+    <span>{{sessionService.data.username}}</span>
+    <button mat-raised-button color="primary" routerLink='register' [hidden]="sessionService.data.token">register</button>
+    <button mat-raised-button color="primary" routerLink='login' (click)="logout()" [hidden]="!sessionService.data.token" >logout</button>
 </mat-toolbar>

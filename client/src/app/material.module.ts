@@ -10,7 +10,8 @@ import {
   MatFormFieldModule,
   MatListModule,
   MatSidenavModule,
-  MatDividerModule
+  MatDividerModule,
+  MatSlideToggleModule
 } from '@angular/material';
 
 import {
@@ -31,7 +32,8 @@ import {
     BrowserAnimationsModule,
     MatListModule,
     MatSidenavModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSlideToggleModule
   ],
   exports: [
     MatButtonModule,
@@ -45,7 +47,8 @@ import {
     BrowserAnimationsModule,
     MatListModule,
     MatSidenavModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSlideToggleModule
   ]
 })
 export class MaterialModule {}
