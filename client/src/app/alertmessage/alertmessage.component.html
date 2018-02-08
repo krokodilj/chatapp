@@ -1,0 +1,30 @@
+<style>
+    .alertmsgbox {
+        width: 100%;
+        text-align: center;
+        background-color: red;
+    }
+
+    .spacer {
+        width:5%;
+    }
+
+    .messagetext{
+        color: wheat;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    [hidden] {
+        display: none !important;
+    }
+
+</style>
+
+
+<div class="alertmsgbox" [hidden]="alertMsgService.hidden">
+    <span class="messagetext">{{alertMsgService.message}}</span>
+    <span class="spacer"></span>
+    <button mat-button (click)="alertMsgService.hide()" >close</button>    
+</div>
+

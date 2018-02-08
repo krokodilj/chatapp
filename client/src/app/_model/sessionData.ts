@@ -1,5 +1,5 @@
-export class SessionData{
-    id: Number;
-    username: String;
-    token: String
+export class SessionData {
+  id: Number;
+  username: String;
+  token: String;
 }

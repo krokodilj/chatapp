@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 
 import {
   MatButtonModule,
@@ -12,12 +12,12 @@ import {
   MatSidenavModule,
   MatDividerModule,
   MatSlideToggleModule
-} from '@angular/material';
+} from "@angular/material";
 
 import {
   BrowserAnimationsModule,
   NoopAnimationsModule
-} from '@angular/platform-browser/animations'
+} from "@angular/platform-browser/animations";
 
 @NgModule({
   imports: [

@@ -1,17 +1,17 @@
 .container {
-    width: 100%;
+  width: 100%;
   height: 100%;
   padding: 10px;
 }
 
 .content {
   margin-right: auto;
-  margin-left:  auto;
+  margin-left: auto;
   margin-top: 10%;
   width: 25%;
   height: 25%;
 }
 
-.err-msg{
+.err-msg {
   color: rgb(240, 52, 52);
 }
