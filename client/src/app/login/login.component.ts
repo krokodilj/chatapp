@@ -32,7 +32,8 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/chat"]);
       })
       .catch(val => {
-        this.alertMsgService.showMessage(val._body);
+        console.log(val);
+        this.alertMsgService.showResponseMessage(val);
       });
   }
 

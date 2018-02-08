@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
         this.user = new User();
       })
       .catch(val => {
-        this.alertMsgService.showMessage(val._body);
+        this.alertMsgService.showResponseMessage(val._body);
       });
   }
 }
