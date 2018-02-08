@@ -20,7 +20,6 @@ import { LoginComponent } from './login/login.component';
 import { ChatboxComponent } from './chatbox/chatbox.component';
 import { HeaderComponent } from './header/header.component';
 import { RegisterComponent } from './register/register.component';
-import { HomeComponent } from './home/home.component';
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule, HttpModule, AppRoutingModule , MaterialModule ],
