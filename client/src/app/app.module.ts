@@ -12,15 +12,20 @@ import { UserService } from './shared/user.service';
 import { SessionService } from './shared/session.service';
 import { AuthService } from './shared/auth.service';
 
+
+import { CanActivateIfGuest } from './shared/guards/CanActivateIfGuest'
+import { CanActivateIfUser } from './shared/guards/CanActivateIfUser'
+
 import { LoginComponent } from './login/login.component';
 import { ChatboxComponent } from './chatbox/chatbox.component';
 import { HeaderComponent } from './header/header.component';
 import { RegisterComponent } from './register/register.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule, HttpModule, AppRoutingModule , MaterialModule ],
-  declarations: [ AppComponent, AppRoutingModule.components, LoginComponent, ChatboxComponent, HeaderComponent, RegisterComponent ],
-  providers:    [ WebSocketService , UserService , SessionService , AuthService ],
+  declarations: [ AppComponent, AppRoutingModule.components , HeaderComponent ],
+  providers:    [ WebSocketService , UserService , SessionService , AuthService , CanActivateIfGuest , CanActivateIfUser],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { 
