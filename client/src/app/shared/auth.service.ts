@@ -27,4 +27,8 @@ export class AuthService {
     this.sessionService.destroySesison()
   }
 
+  isAuthenticated(){
+    return this.sessionService.data.token!=null
+  }
+
 }
