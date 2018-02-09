@@ -60,7 +60,10 @@ router.post("/login", validate(schema.login), async (req, res, next) => {
         .json("Password does not math")
         .send();
     else {
-      let token = jwt.createToken(user);
+      let token = jwt.createToken({
+        id: user.id,
+        username: user.username
+      });
       res
         .status(200)
         .json(token)

@@ -14,21 +14,9 @@ app.use(
 );
 
 app.use("/api/user", require("./api/user.api"));
+app.use("/api/room", require("./api/room.api"));
 
-// err 400
-app.use((err, req, res, next) => {
-  if (err.status == 400)
-    res
-      .status(400)
-      .json(err.errors)
-      .send();
-  else next(err);
-});
-// err 500
-app.use((err, req, res, next) => {
-  console.log("b" + err);
-  res.status(500).send();
-});
+app.use(require("./api/middleware/error"));
 
 const server = http.createServer(app);
 

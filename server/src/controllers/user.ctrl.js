@@ -8,8 +8,8 @@ module.exports = {
 
 async function save(user) {
   let connection = await getConnection();
-  let rows = await connection.query("INSERT INTO user SET ? ;", user);
-  return rows.insertId;
+  let result = await connection.query("INSERT INTO user SET ? ;", user);
+  return result.insertId;
 }
 
 async function getOne(id) {
