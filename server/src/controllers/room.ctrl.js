@@ -4,7 +4,8 @@ module.exports = {
   save: save,
   getAll: getAll,
   getOne: getOne,
-  getOneByName: getOneByName
+  getOneByName: getOneByName,
+  getRoomUsers: getRoomUsers
 };
 
 async function save(room) {
@@ -32,4 +33,14 @@ async function getOneByName(name) {
     name
   );
   return rows[0];
+}
+
+async function getRoomUsers(id) {
+  let connection = await getConnection();
+  let rows = await connection.query(
+    `SELECT u.id , u.username ,u.email FROM room AS r JOIN user_room AS ur JOIN user AS u 
+    WHERE ur.user_id=u.id AND r.id=?;`,
+    id
+  );
+  return rows;
 }

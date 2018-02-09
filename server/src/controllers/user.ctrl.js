@@ -3,7 +3,8 @@ const getConnection = require("../core/mysqlpool");
 module.exports = {
   save: save,
   getOne: getOne,
-  getOneByUsername: getOneByUsername
+  getOneByUsername: getOneByUsername,
+  getUserRooms: getUserRooms
 };
 
 async function save(user) {
@@ -25,4 +26,14 @@ async function getOneByUsername(username) {
     username
   );
   return rows[0];
+}
+
+async function getUserRooms(id) {
+  let connection = await getConnection();
+  let rows = await connection.query(
+    `SELECT r.id , r.name FROM user AS u JOIN user_room AS ur JOIN room AS r 
+    WHERE ur.room_id=r.id AND u.id=?;`,
+    id
+  );
+  return rows;
 }

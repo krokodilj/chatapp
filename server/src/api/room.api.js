@@ -62,4 +62,17 @@ router.get("/:id", validate(schema.getRoom), async (req, res, next) => {
   }
 });
 
+router.get("/:id/users", validate(schema.getRoom), async (req, res, next) => {
+  try {
+    let id = req.params.id;
+    let users = await roomCtrl.getRoomUsers(id);
+    res
+      .status(200)
+      .json(users)
+      .send();
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
