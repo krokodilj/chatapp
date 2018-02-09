@@ -26,13 +26,13 @@ export class RegisterComponent implements OnInit {
     this.userService
       .create(this.user)
       .then(val => {
-        alert("success , your id is " + val);
-        this.authService.authenticate(this.user);
-        this.router.navigate(["/"]);
-        this.user = new User();
+        this.authService.authenticate(this.user).then(_ => {
+          this.router.navigate(["/chat"]);
+          this.user = new User();
+        });
       })
       .catch(val => {
-        this.alertMsgService.showResponseMessage(val._body);
+        this.alertMsgService.showResponseMessage(val);
       });
   }
 }

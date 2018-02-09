@@ -29,14 +29,7 @@ export class AlertMessageService {
   }
 
   showResponseMessage(message) {
-    if (message.status == 400) {
-      this.message = "";
-      for (let field of JSON.parse(message._body)) {
-        this.message += "- " + field.messages + "\n";
-      }
-    } else {
-      this.message = message._body;
-    }
+    this.message = message._body;
     this.hidden = false;
   }
 

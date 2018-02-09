@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, Observer, BehaviorSubject, Subject } from "rxjs";
 import { SessionService } from "./session.service";
+import { AlertMessageService } from "./alertmessage.service";
 
 @Injectable()
 export class WebSocketService {
@@ -18,12 +19,19 @@ export class WebSocketService {
       this.$socket = this.createSubject();
       this.$isConnected.next(true);
     };
+
+    this.socket.onerror = () => {
+      this.alertMsgService.showMessage("Connection Error");
+    };
+
+    this.socket.onclose = () => {
+      this.$socket = null;
+      this.$isConnected.next(false);
+    };
   }
 
   disconnect() {
     this.socket.close();
-    this.$socket = null;
-    this.$isConnected.next(false);
   }
 
   private createSubject(): Subject<any> {
@@ -36,7 +44,7 @@ export class WebSocketService {
     let observable = Observable.create((obs: Observer<any>) => {
       this.socket.onmessage = obs.next.bind(obs);
       this.socket.onerror = obs.error.bind(obs);
-      this.socket.onclose = obs.complete.bind(obs);
+      //this.socket.onclose = obs.complete.bind(obs);
 
       return this.socket.close.bind(this.socket);
     });
@@ -46,7 +54,10 @@ export class WebSocketService {
     return subject;
   }
 
-  constructor(private sessionService: SessionService) {
+  constructor(
+    private sessionService: SessionService,
+    private alertMsgService: AlertMessageService
+  ) {
     this.$isConnected = new BehaviorSubject(false);
   }
 }

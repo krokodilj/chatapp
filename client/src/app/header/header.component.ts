@@ -25,6 +25,6 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logOut();
-    this.ws.disconnect();
+    if (this.ws.$isConnected.getValue()) this.ws.disconnect();
   }
 }
