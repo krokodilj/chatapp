@@ -12,19 +12,16 @@ export class ChatboxComponent implements OnInit {
   messages = [];
   socket: Subject<any>;
   error = false;
+  private s ;
 
   private send(message: String): void {
-    this.ws.$socket.next(message);
+    this.ws.send(message)
   }
 
   constructor(private ws: WebSocketService) {}
 
   ngOnInit() {
-    this.ws.$isConnected.subscribe(val => {
-      if (val) {
-        this.ws.$socket.subscribe(this.subscription.onNext);
-      }
-    });
+    this.ws.$messaages.subscribe(this.subscription.onNext);
   }
 
   private subscription = {

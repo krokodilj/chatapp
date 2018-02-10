@@ -2,62 +2,65 @@ import { Injectable } from "@angular/core";
 import { Observable, Observer, BehaviorSubject, Subject } from "rxjs";
 import { SessionService } from "./session.service";
 import { AlertMessageService } from "./alertmessage.service";
+import { Message } from "../_model/Message"
 
 @Injectable()
 export class WebSocketService {
-  private url = "ws://localhost:3001";
-  public $isConnected: BehaviorSubject<Boolean>;
-  public $socket: Subject<any>;
+  public $connection: BehaviorSubject<Boolean>;
+  public $notifications: Subject<Notification>;
+  public $messaages: Subject<String>;
   private socket: WebSocket;
+  private url = "ws://localhost:3001";
 
   connect() {
     this.socket = new WebSocket(
       this.url + `/?token=${this.sessionService.data.token}`
     );
 
-    this.socket.onopen = () => {
-      this.$socket = this.createSubject();
-      this.$isConnected.next(true);
-    };
+    this.socket.onopen = this.onOpen.bind(this)
 
-    this.socket.onerror = () => {
-      this.alertMsgService.showMessage("Connection Error");
-    };
+    this.socket.onmessage =this.onMessage.bind(this)
+    
+    this.socket.onerror = this.onError.bind(this)
 
-    this.socket.onclose = () => {
-      this.$socket = null;
-      this.$isConnected.next(false);
-    };
+    this.socket.onclose = this.onClose.bind(this)
   }
 
   disconnect() {
     this.socket.close();
+    this.socket=null;
   }
 
-  private createSubject(): Subject<any> {
-    let observer = {
-      next: (data: any) => {
-        this.socket.send(data);
-      }
-    };
+  send(data){
+    
+    if(this.socket && this.socket.readyState==1)
+      this.socket.send(data)
+  }
 
-    let observable = Observable.create((obs: Observer<any>) => {
-      this.socket.onmessage = obs.next.bind(obs);
-      this.socket.onerror = obs.error.bind(obs);
-      //this.socket.onclose = obs.complete.bind(obs);
+  private onOpen(){
+    this.$connection.next(true);
+  }
 
-      return this.socket.close.bind(this.socket);
-    });
+  private onMessage(data){
+    //DELETE
+    this.$messaages.next(data)
+    //TODO parse message and .next subjects
 
-    let subject = Subject.create(observer, observable);
+  }
 
-    return subject;
+  private onError(){
+    this.alertMsgService.showMessage("Connection Error");
+  }
+
+  private onClose(){
+    this.$connection.next(false);
   }
 
   constructor(
     private sessionService: SessionService,
     private alertMsgService: AlertMessageService
   ) {
-    this.$isConnected = new BehaviorSubject(false);
+    this.$connection = new BehaviorSubject(false);
+    this.$messaages = new Subject();
   }
 }

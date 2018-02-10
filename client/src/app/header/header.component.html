@@ -1,11 +1,12 @@
 <mat-toolbar color="primary">
     <span>chat</span>
+    <span>{{ws.$connection.getValue()}}</span>
     <span class="spacer"></span>
     <span class="spacer"></span>
     <div [hidden]="!authService.isAuthenticated()">
-        {{(ws.$isConnected  | async) ? "Connected" : "Disconnected" }}
+        {{ (ws.$connection  | async) ? "Connected" : "Disconnected" }}
         <span class="spacer"></span>
-        <mat-slide-toggle (change)="change()" [checked]="ws.$isConnected  | async"></mat-slide-toggle>
+        <mat-slide-toggle (change)="change()" [checked]="ws.$connection  | async"></mat-slide-toggle>
     </div>
     <span class="spacer"></span>
     <button mat-raised-button color="primary" routerLink='login' [hidden]="authService.isAuthenticated()">login</button>

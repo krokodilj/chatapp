@@ -19,12 +19,12 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {}
 
   change() {
-    if (this.ws.$isConnected.getValue()) this.ws.disconnect();
+    if (this.ws.$connection.getValue()) this.ws.disconnect();
     else this.ws.connect();
   }
 
   logout() {
     this.authService.logOut();
-    if (this.ws.$isConnected.getValue()) this.ws.disconnect();
+    if (this.ws.$connection.getValue()) this.ws.disconnect();
   }
 }

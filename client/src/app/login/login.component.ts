@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private ws: WebSocketService,
     private alertMsgService: AlertMessageService,
     private router: Router
   ) {}
