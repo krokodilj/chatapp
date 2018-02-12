@@ -27,4 +27,8 @@ class Connection {
       });
     });
   }
+
+  close() {
+    this.connection.release();
+  }
 }
