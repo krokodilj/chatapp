@@ -1,11 +1,11 @@
 <div class="container" >
-    
+    <span>{{selectedRoom.name}}</span>
     <div class=content>
 
         <div class="message-input">
 
             <mat-form-field>
-                    <textarea matInput [(ngModel)] = "message" [disabled]="error"></textarea>
+                    <textarea matInput [(ngModel)] = "message" [disabled]="error" placeholder="selectedRoom.id"></textarea>
             </mat-form-field>
 
             <button mat-raised-button color="primary" (click)="send(message)" [disabled]="error">send</button>
@@ -16,8 +16,8 @@
 
         <mat-list class="">
             <mat-list-item *ngFor="let m of messages">
-                <span>{{m.sentBy}} : </span>
-                <span>{{m.message}}</span>
+                <span>{{m.from.username}} : </span>
+                <span>{{m.text}}</span>
             </mat-list-item>
         </mat-list>
     </div>

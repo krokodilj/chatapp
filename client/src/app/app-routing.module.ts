@@ -5,6 +5,7 @@ import { ChatboxComponent } from "./chatbox/chatbox.component";
 import { RegisterComponent } from "./register/register.component";
 import { CanActivateIfGuest } from "./shared/guards/CanActivateIfGuest";
 import { CanActivateIfUser } from "./shared/guards/CanActivateIfUser";
+import { HomeComponent } from "./home/home.component";
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/login" },
@@ -15,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: "chat",
-    component: ChatboxComponent,
+    component: HomeComponent,
     canActivate: [CanActivateIfUser]
   },
   {

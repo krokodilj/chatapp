@@ -21,6 +21,8 @@ import { ChatboxComponent } from "./chatbox/chatbox.component";
 import { HeaderComponent } from "./header/header.component";
 import { RegisterComponent } from "./register/register.component";
 import { AlertmessageComponent } from "./alertmessage/alertmessage.component";
+import { HomeComponent } from "./home/home.component";
+import { RoomsComponent } from "./rooms/rooms.component";
 
 @NgModule({
   imports: [
@@ -34,7 +36,9 @@ import { AlertmessageComponent } from "./alertmessage/alertmessage.component";
     AppComponent,
     AppRoutingModule.components,
     HeaderComponent,
-    AlertmessageComponent
+    AlertmessageComponent,
+    HomeComponent,
+    RoomsComponent
   ],
   providers: [
     WebSocketService,

@@ -18,7 +18,15 @@ export class UserService {
 
   getOne(id: Number): Promise<User> {
     return this.http
-      .get("api/user/" + id)
+      .get("/api/user/" + id)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getUserRooms(id: Number): Promise<any> {
+    return this.http
+      .get("/api/user/" + id + "/rooms")
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
