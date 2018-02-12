@@ -3,11 +3,14 @@ const url = require("url");
 const redis = require("redis").createClient();
 const jwt = require("./jwt");
 
+const userCtrl = require("../controllers/user.ctrl");
+const roomCtrl = require("../controllers/room.ctrl");
+
+const getConnection = require("./redisClient");
+
 module.exports = {
   createServer: createServer
 };
-
-var USERS = {};
 
 function createServer(server) {
   const wss = new ws.Server({
@@ -17,39 +20,67 @@ function createServer(server) {
 
   wss.on("connection", socket => {
     let userData = socket.upgradeReq.userData;
+    socket.userData = userData;
 
-    socket.id = userData.username;
-    USERS[socket.id] = socket;
-
-    socket.send(
-      JSON.stringify({
-        sentBy: "SERVER",
-        message: `hi , ${userData.username}`
-      })
-    );
-
-    broadcast("SERVER", `User ${userData.username} connected`);
-
+    //send connected_user notification
+    let message = {
+      from: userData,
+      type: "notification",
+      text: "connected_user"
+    };
+    broadcastMessage(message);
     console.log(`user connected id=${userData.username}`);
-    console.log("allusers : " + Object.keys(USERS));
 
     //EVENTS
-    socket.on("message", message => {
-      console.log(`new message ${socket.id}: ${message}`);
-      broadcast(socket.id, message);
+    socket.on("message", async message_string => {
+      try {
+        let message = JSON.parse(message_string);
+        let userRooms = await userCtrl.getUserRooms(socket.userData.id);
+        let userRoomsIds = userRooms.map(e => e.id);
+        if (userRoomsIds.includes(message.toId)) {
+          //check if can send to room
+          message.from = userData; //attach
+          sendToRoom(message.toId, message); //send
+        }
+        //let conn = await getConnection()
+        //conn.lpush("default",message)
+      } catch (err) {
+        console.log(err);
+      }
     });
 
     socket.on("close", p => {
-      delete USERS[socket.id];
-      broadcast("SERVER", `User ${userData.username} disconnected`);
-      console.log(`user disconnected id=${socket.id}`);
-      console.log("allusers : " + Object.keys(USERS));
+      let message = {
+        from: userData,
+        type: "notification",
+        text: "disconnected_user"
+      };
+      broadcastMessage(message);
+      console.log(`user disconnected id=${userData.username}`);
     });
 
     socket.on("error", e => {
       console.log("socketerror : " + e);
     });
   });
+
+  function broadcastMessage(message) {
+    for (let socket of wss.clients) {
+      socket.send(JSON.stringify(message));
+    }
+  }
+
+  async function sendToRoom(roomId, message) {
+    let roomUsers = await roomCtrl.getRoomUsers(roomId);
+    let roomUsersIds = roomUsers.map(e => e.id);
+    //TODO if room persists messages log message
+    for (let socket of wss.clients) {
+      //iterate connected websockets
+      if (roomUsersIds.includes(socket.userData.id))
+        //if user socket is in room
+        socket.send(JSON.stringify(message)); //send
+    }
+  }
 }
 
 function verifyClients(info, cb) {
@@ -65,15 +96,4 @@ function verifyClients(info, cb) {
         cb(false, 401, "Unauthorised");
       });
   } else cb(false, 400, "Bad Request");
-}
-
-function broadcast(sender, message) {
-  for (let id in USERS) {
-    USERS[id].send(
-      JSON.stringify({
-        sentBy: sender,
-        message: message
-      })
-    );
-  }
 }
