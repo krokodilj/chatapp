@@ -38,8 +38,7 @@ async function getOneByName(name) {
 async function getRoomUsers(id) {
   let connection = await getConnection();
   let rows = await connection.query(
-    `SELECT u.id , u.username ,u.email FROM room AS r JOIN user_room AS ur JOIN user AS u 
-    WHERE ur.user_id=u.id AND r.id=?;`,
+    `select u.id , u.username ,u.email from room r join user_room ur join user u where r.id=ur.room_id and ur.user_id=u.id and r.id=?;`,
     id
   );
   return rows;
