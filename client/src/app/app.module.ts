@@ -17,12 +17,12 @@ import { CanActivateIfGuest } from "./shared/guards/CanActivateIfGuest";
 import { CanActivateIfUser } from "./shared/guards/CanActivateIfUser";
 
 import { LoginComponent } from "./login/login.component";
-import { ChatboxComponent } from "./chatbox/chatbox.component";
+import { ChatboxComponent } from "./home/chatbox/chatbox.component";
 import { HeaderComponent } from "./header/header.component";
 import { RegisterComponent } from "./register/register.component";
 import { AlertmessageComponent } from "./alertmessage/alertmessage.component";
 import { HomeComponent } from "./home/home.component";
-import { RoomsComponent } from "./rooms/rooms.component";
+import { RoomsComponent } from "./home/rooms/rooms.component";
 
 @NgModule({
   imports: [
@@ -38,7 +38,8 @@ import { RoomsComponent } from "./rooms/rooms.component";
     HeaderComponent,
     AlertmessageComponent,
     HomeComponent,
-    RoomsComponent
+    RoomsComponent,
+    ChatboxComponent
   ],
   providers: [
     WebSocketService,

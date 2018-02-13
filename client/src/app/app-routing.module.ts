@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { LoginComponent } from "./login/login.component";
-import { ChatboxComponent } from "./chatbox/chatbox.component";
 import { RegisterComponent } from "./register/register.component";
 import { CanActivateIfGuest } from "./shared/guards/CanActivateIfGuest";
 import { CanActivateIfUser } from "./shared/guards/CanActivateIfUser";
@@ -31,5 +30,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {
-  static components = [LoginComponent, RegisterComponent, ChatboxComponent];
+  static components = [LoginComponent, RegisterComponent];
 }

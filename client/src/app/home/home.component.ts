@@ -3,10 +3,10 @@ import { Component, OnInit } from "@angular/core";
 @Component({
   selector: "app-home",
   template: `
-    <div layout="row">
-      <app-rooms flex (change)="roomChange($event)" ></app-rooms>
-      <app-chatbox flex [selectedRoom]="sharedData"></app-chatbox>
-    </div>
+  <div class="flex-container" fxLayout="row">
+      <app-rooms  fxFlex="40" (change)="roomChange($event)" [selectedRoom]="sharedData" ></app-rooms>
+      <app-chatbox  fxFlex="60" [selectedRoom]="sharedData"></app-chatbox>
+  </div>
   `,
   styles: []
 })

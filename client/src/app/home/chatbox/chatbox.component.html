@@ -1,0 +1,20 @@
+<span>{{selectedRoom.name}}</span>
+
+
+<mat-form-field>
+        <textarea matInput [(ngModel)] = "message" [disabled]="!(ws.$connection | async)" ></textarea>
+</mat-form-field>
+
+<button mat-raised-button color="primary" (click)="send(message)" [disabled]="!(ws.$connection | async)">send</button>
+
+
+
+<mat-divider></mat-divider>
+
+<mat-list class="">
+    <mat-list-item *ngFor="let m of messages">
+        <span>{{m.from.username}} : </span>
+        <span>{{m.text}}</span>
+    </mat-list-item>
+</mat-list>
+

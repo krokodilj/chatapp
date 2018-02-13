@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Http, Headers, Response } from "@angular/http";
 import { User } from "../_model/user";
+import { SessionService } from "./session.service";
 
 @Injectable()
 export class UserService {
   headers = new Headers({ "Content-Type": "application/json" });
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private sessionService: SessionService) {}
 
   create(user: User): Promise<Number> {
     return this.http
@@ -25,8 +26,9 @@ export class UserService {
   }
 
   getUserRooms(id: Number): Promise<any> {
+    let headers = new Headers({ "Auth-Token": this.sessionService.data.token });
     return this.http
-      .get("/api/user/" + id + "/rooms")
+      .get("/api/user/" + id + "/rooms", { headers: headers })
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);

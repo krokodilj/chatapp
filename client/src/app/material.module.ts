@@ -19,6 +19,8 @@ import {
   NoopAnimationsModule
 } from "@angular/platform-browser/animations";
 
+import { FlexLayoutModule } from "@angular/flex-layout";
+
 @NgModule({
   imports: [
     MatButtonModule,
@@ -33,7 +35,8 @@ import {
     MatListModule,
     MatSidenavModule,
     MatDividerModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    FlexLayoutModule
   ],
   exports: [
     MatButtonModule,
@@ -48,7 +51,8 @@ import {
     MatListModule,
     MatSidenavModule,
     MatDividerModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    FlexLayoutModule
   ]
 })
 export class MaterialModule {}
