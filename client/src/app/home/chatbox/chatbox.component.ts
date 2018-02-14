@@ -35,7 +35,6 @@ export class ChatboxComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes) {
-    console.log(changes);
     let prev = changes.selectedRoom.previousValue;
     let curr = changes.selectedRoom.currentValue;
     if (prev)
@@ -52,6 +51,9 @@ export class ChatboxComponent implements OnInit, OnChanges {
       else {
         if (Object.keys(this.persist).includes(String(data.toId)))
           this.persist[data.toId].unshift(data);
+        else {
+          this.persist[data.toId] = [data];
+        }
       }
     }
   };

@@ -5,15 +5,7 @@ import { WebSocketService } from "../../shared/websocket.service";
 
 @Component({
   selector: "app-rooms",
-  template: `
-    <mat-list>
-      <mat-list-item *ngFor="let m of rooms" (click) = "switch(m)">
-          <span>{{m.id}} : </span>
-          <span>{{m.name}}</span>
-          <span>{{m.br}}</span>
-      </mat-list-item>
-    </mat-list>
-  `,
+  templateUrl: "./rooms.component.html",
   styles: []
 })
 export class RoomsComponent implements OnInit {

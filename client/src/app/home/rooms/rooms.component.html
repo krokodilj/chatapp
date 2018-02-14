@@ -1,0 +1,22 @@
+<style>
+    .example-container {
+  
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+</style>
+<mat-sidenav-container class="example-container" >
+    <mat-sidenav mode="side" closed>Sidenav content</mat-sidenav>
+  </mat-sidenav-container>
+<div syle="padding:10px">
+    <h2>rooms:</h2>
+    <mat-divider></mat-divider>
+    <mat-list>
+        <mat-list-item *ngFor="let m of rooms" (click) = "switch(m)" >
+            <h3 matLine>{{m.name}}</h3>
+            <span>{{m.br}}</span>
+        </mat-list-item>
+    </mat-list>
+</div>

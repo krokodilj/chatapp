@@ -1,20 +1,18 @@
-<span>{{selectedRoom.name}}</span>
+<div fxLayout="column" style="padding:10px">
+    <span>Connected to room >> {{selectedRoom.name}}</span>
 
+    <mat-form-field style="border-style:solid" >
+        <textarea matInput [(ngModel)] = "message" [disabled]="(!(ws.$connection | async) || !selectedRoom.id)" style="padding:10px" ></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="send(message)" [disabled]="(!(ws.$connection | async)  || (!selectedRoom.id))">send</button>
 
-<mat-form-field>
-        <textarea matInput [(ngModel)] = "message" [disabled]="!(ws.$connection | async)" ></textarea>
-</mat-form-field>
-
-<button mat-raised-button color="primary" (click)="send(message)" [disabled]="!(ws.$connection | async)">send</button>
-
-
-
-<mat-divider></mat-divider>
-
-<mat-list class="">
-    <mat-list-item *ngFor="let m of messages">
-        <span>{{m.from.username}} : </span>
-        <span>{{m.text}}</span>
-    </mat-list-item>
-</mat-list>
-
+    <mat-divider></mat-divider>
+    <div style="height:400px; overflow-y:scroll">
+        <mat-list class="">
+            <mat-list-item *ngFor="let m of messages">
+                <span>{{m.from.username}} : </span>
+                <span>{{m.text}}</span>
+            </mat-list-item>
+        </mat-list>
+    </div>
+</div>
