@@ -38,10 +38,12 @@ export class ChatboxComponent implements OnInit, OnChanges {
     let prev = changes.selectedRoom.previousValue;
     let curr = changes.selectedRoom.currentValue;
     if (prev)
-      if (prev.id && curr.id) {
+      if (prev.id) {
         this.persist[prev.id] = this.messages;
-        this.messages = this.persist[curr.id] ? this.persist[curr.id] : [];
       }
+    if (curr.id) {
+      this.messages = this.persist[curr.id] ? this.persist[curr.id] : [];
+    }
   }
 
   private subscription = {

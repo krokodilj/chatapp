@@ -4,6 +4,9 @@ import { AuthService } from "../shared/auth.service";
 import { User } from "../_model/user";
 import { Router } from "@angular/router";
 import { AlertMessageService } from "../shared/alertmessage.service";
+import { FileUploader } from "ng2-file-upload";
+import { Http, Headers } from "@angular/http";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-register",
@@ -12,27 +15,50 @@ import { AlertMessageService } from "../shared/alertmessage.service";
 })
 export class RegisterComponent implements OnInit {
   private user: User = new User();
+  private step: Number = 1;
+  private id: Number;
+  private fileList = [];
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
     private alertMsgService: AlertMessageService,
-    private router: Router
+    private router: Router,
+    private http: Http
   ) {}
 
   ngOnInit() {}
 
-  register(user: User) {
-    this.userService
-      .create(this.user)
-      .then(val => {
-        this.authService.authenticate(this.user).then(_ => {
-          this.router.navigate(["/chat"]);
-          this.user = new User();
-        });
-      })
-      .catch(val => {
-        this.alertMsgService.showResponseMessage(val);
-      });
+  async register(user: User) {
+    try {
+      let id = await this.userService.create(this.user);
+      this.step = 2;
+      this.id = id;
+    } catch (err) {
+      this.alertMsgService.showResponseMessage(err);
+    }
+  }
+
+  async upload() {
+    try {
+      let file: File = this.fileList[0];
+      await this.userService.uploadUserAvatar(this.id, file);
+      this.finish();
+    } catch (err) {
+      this.alertMsgService.showResponseMessage(err);
+    }
+  }
+
+  async finish() {
+    try {
+      await this.authService.authenticate(this.user);
+      this.router.navigate(["/chat"]);
+    } catch (err) {
+      this.alertMsgService.showResponseMessage(err);
+    }
+  }
+
+  private fileChanged(event) {
+    this.fileList = event.target.files;
   }
 }

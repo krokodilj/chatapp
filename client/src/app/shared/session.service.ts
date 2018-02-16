@@ -18,6 +18,7 @@ export class SessionService {
     let data = this.parseJWT(token);
     this._data.id = data.id;
     this._data.username = data.username;
+    this._data.avatar = data.avatar;
   }
 
   destroySesison() {
@@ -33,6 +34,7 @@ export class SessionService {
       let data = this.parseJWT(token);
       this._data.id = data.id;
       this._data.username = data.username;
+      this._data.avatar = data.avatar;
     }
   }
 

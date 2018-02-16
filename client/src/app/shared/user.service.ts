@@ -34,6 +34,16 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  uploadUserAvatar(id: Number, file: File): Promise<any> {
+    let formData: FormData = new FormData();
+    formData.append("image", file, file.name);
+    return this.http
+      .put("/api/user/" + id + "/upload", formData)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     let body = res.json();
     return body || {};

@@ -4,7 +4,8 @@ module.exports = {
   save: save,
   getOne: getOne,
   getOneByUsername: getOneByUsername,
-  getUserRooms: getUserRooms
+  getUserRooms: getUserRooms,
+  addAvatar: addAvatar
 };
 
 async function save(user) {
@@ -37,6 +38,16 @@ async function getUserRooms(id) {
     `select r.id,r.name from user u join user_room ur join room r where u.id=ur.user_id and r.id=ur.room_id and u.id=?`,
     id
   );
+  connection.close();
+  return rows;
+}
+
+async function addAvatar(id, filename) {
+  let connection = await getConnection();
+  let rows = await connection.query("update user set avatar=? where id=?;", [
+    filename,
+    id
+  ]);
   connection.close();
   return rows;
 }

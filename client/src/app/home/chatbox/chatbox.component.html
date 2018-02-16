@@ -1,5 +1,5 @@
 <div fxLayout="column" style="padding:10px">
-    <span>Connected to room >> {{selectedRoom.name}}</span>
+    <h3>Connected to room >> {{selectedRoom.name}}</h3>
 
     <mat-form-field style="border-style:solid" >
         <textarea matInput [(ngModel)] = "message" [disabled]="(!(ws.$connection | async) || !selectedRoom.id)" style="padding:10px" ></textarea>
@@ -8,8 +8,9 @@
 
     <mat-divider></mat-divider>
     <div style="height:400px; overflow-y:scroll">
-        <mat-list class="">
+        <mat-list>
             <mat-list-item *ngFor="let m of messages">
+                <img matListAvatar [src]="'/static/'+m.from.avatar" >
                 <span>{{m.from.username}} : </span>
                 <span>{{m.text}}</span>
             </mat-list-item>

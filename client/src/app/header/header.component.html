@@ -1,15 +1,29 @@
 <mat-toolbar color="primary">
-    <span>chat</span>
+    <span >chat</span>
     <span class="spacer"></span>
     <span class="spacer"></span>
+    <!-- show if user is logged in -->
     <div [hidden]="!authService.isAuthenticated()">
         {{ (ws.$connection  | async) ? "Connected" : "Disconnected" }}
         <span class="spacer"></span>
         <mat-slide-toggle (change)="change()" [checked]="ws.$connection  | async"></mat-slide-toggle>
     </div>
     <span class="spacer"></span>
-    <button mat-raised-button color="primary" routerLink='login' [hidden]="authService.isAuthenticated()">login</button>
-    <span>{{sessionService.data.username}}</span>
-    <button mat-raised-button color="primary" routerLink='register' [hidden]="authService.isAuthenticated()">register</button>
-    <button mat-raised-button color="primary" routerLink='login' (click)="logout()" [hidden]="!authService.isAuthenticated()" >logout</button>
+    <!-- show if guest-->
+    <div  [hidden]="authService.isAuthenticated()">
+        <button mat-raised-button color="primary" routerLink='login'>login</button>
+        <button mat-raised-button color="primary" routerLink='register'>register</button>
+    </div>
+    <!-- show if user is logged in -->    
+        <span [hidden]="!authService.isAuthenticated()">{{sessionService.data.username}}</span>
+        <img 
+            class="avatar"
+            [src]="'/static/' + sessionService.data.avatar" 
+            [hidden]="!authService.isAuthenticated()" >
+            <button mat-raised-button color="primary" 
+                (click)="logout()"
+                [hidden]="!authService.isAuthenticated()">
+                log out
+            </button>
+    <span class="spacer"></span>
 </mat-toolbar>

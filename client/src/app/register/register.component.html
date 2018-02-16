@@ -16,11 +16,15 @@
 .err-msg{
   color: rgb(240, 52, 52);
 }
-</style>
 
+[hidden] {
+  display: none !important;
+}
+
+</style>
 <div class="container">
 
-    <mat-card class="content">
+    <mat-card class="content" [hidden]="step!=1">
   
       <mat-card-title >
         <span>Register</span>
@@ -43,7 +47,23 @@
       <mat-card-actions >
           <button mat-raised-button color="primary" (click)="register(user)" >register</button>
       </mat-card-actions>
-    
     </mat-card>
+
+    <mat-card class="content" [hidden]="step!=2">
+  
+        <mat-card-title >
+          <span>Upload Avatar</span>
+        </mat-card-title>
+    
+        <mat-card-content>            
+            <input type="file" (change)="fileChanged($event)" placeholder="Upload iage" accept=".png,.jpg,.jpeg">
+        </mat-card-content>
+    
+        <mat-card-actions >
+            <button mat-raised-button color="primary" (click)="upload()" [disabled]="fileList.length==0" >upload</button>
+            <button mat-raised-button color="primary" (click)="finish()" >skip</button>
+        </mat-card-actions>
+      
+      </mat-card>
   
   </div>

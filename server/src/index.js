@@ -1,6 +1,7 @@
 const websocket = require("./core/websocket");
 const express = require("express");
 const http = require("http");
+const path = require("path");
 
 const config = require("./config/config");
 const app = express();
@@ -12,6 +13,7 @@ app.use(
     extended: true
   })
 );
+app.use("/static", express.static(path.join(__dirname, "../public")));
 
 app.use("/api/user", require("./api/user.api"));
 app.use("/api/room", require("./api/room.api"));

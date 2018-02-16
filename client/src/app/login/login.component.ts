@@ -13,10 +13,6 @@ import { AlertMessageService } from "../shared/alertmessage.service";
 })
 export class LoginComponent implements OnInit {
   private loginData: User = new User();
-  private error = {
-    message: "login error",
-    hidden: true
-  };
 
   constructor(
     private authService: AuthService,
@@ -31,7 +27,6 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/chat"]);
       })
       .catch(val => {
-        console.log(val);
         this.alertMsgService.showResponseMessage(val);
       });
   }

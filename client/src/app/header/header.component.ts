@@ -13,7 +13,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private sessionService: SessionService,
     private authService: AuthService,
-    private ws: WebSocketService
+    private ws: WebSocketService,
+    private router: Router
   ) {}
 
   ngOnInit() {}
@@ -26,5 +27,6 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logOut();
     if (this.ws.$connection.getValue()) this.ws.disconnect();
+    this.router.navigate(["/login"]);
   }
 }
