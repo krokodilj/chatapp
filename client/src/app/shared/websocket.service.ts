@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, Observer, BehaviorSubject, Subject } from "rxjs";
 import { SessionService } from "./session.service";
-import { AlertMessageService } from "./alertmessage.service";
+import { AlertMessageService } from "./util/alertmessage.service";
 
 @Injectable()
 export class WebSocketService {

@@ -4,7 +4,7 @@ import { Subject } from "rxjs/Subject";
 import { Router } from "@angular/router";
 import { User } from "../_model/user";
 import { AuthService } from "../shared/auth.service";
-import { AlertMessageService } from "../shared/alertmessage.service";
+import { AlertMessageService } from "../shared/util/alertmessage.service";
 
 @Component({
   selector: "app-login",
@@ -20,15 +20,13 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {}
 
-  private login(loginData: User): void {
-    this.authService
-      .authenticate(loginData)
-      .then(val => {
-        this.router.navigate(["/chat"]);
-      })
-      .catch(val => {
-        this.alertMsgService.showResponseMessage(val);
-      });
+  async login(loginData: User) {
+    try {
+      await this.authService.authenticate(loginData);
+      this.router.navigate(["/chat"]);
+    } catch (err) {
+      this.alertMsgService.showResponseMessage(err);
+    }
   }
 
   ngOnInit() {}

@@ -3,7 +3,7 @@ import { UserService } from "../shared/user.service";
 import { AuthService } from "../shared/auth.service";
 import { User } from "../_model/user";
 import { Router } from "@angular/router";
-import { AlertMessageService } from "../shared/alertmessage.service";
+import { AlertMessageService } from "../shared/util/alertmessage.service";
 import { Http, Headers } from "@angular/http";
 import { Observable } from "rxjs";
 

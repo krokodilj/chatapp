@@ -2,27 +2,32 @@ import { Injectable } from "@angular/core";
 import { Http, Headers, Response } from "@angular/http";
 import { User } from "../_model/user";
 import { SessionService } from "./session.service";
+import { HandleHttpResponseService } from "./util/handleHttpResponse.service";
 
 @Injectable()
 export class UserService {
   headers = new Headers({ "Content-Type": "application/json" });
 
-  constructor(private http: Http, private sessionService: SessionService) {}
+  constructor(
+    private http: Http,
+    private sessionService: SessionService,
+    private handleResponse: HandleHttpResponseService
+  ) {}
 
   create(user: User): Promise<Number> {
     return this.http
       .post("/api/user", JSON.stringify(user), { headers: this.headers })
       .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
+      .then(this.handleResponse.extractJSON)
+      .catch(this.handleResponse.error);
   }
 
   getOne(id: Number): Promise<User> {
     return this.http
       .get("/api/user/" + id)
       .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
+      .then(this.handleResponse.extractJSON)
+      .catch(this.handleResponse.error);
   }
 
   getUserRooms(id: Number): Promise<any> {
@@ -30,8 +35,8 @@ export class UserService {
     return this.http
       .get("/api/user/" + id + "/rooms", { headers: headers })
       .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
+      .then(this.handleResponse.extractJSON)
+      .catch(this.handleResponse.error);
   }
 
   uploadUserAvatar(id: Number, file: File): Promise<any> {
@@ -40,17 +45,7 @@ export class UserService {
     return this.http
       .put("/api/user/" + id + "/upload", formData)
       .toPromise()
-      .then(this.extractData)
-      .catch(this.handleError);
-  }
-
-  private extractData(res: Response) {
-    let body = res.json();
-    return body || {};
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error("An error occurred", error);
-    return Promise.reject(error.message || error);
+      .then(this.handleResponse.extractJSON)
+      .catch(this.handleResponse.error);
   }
 }

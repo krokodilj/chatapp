@@ -11,8 +11,11 @@ import { WebSocketService } from "./shared/websocket.service";
 import { UserService } from "./shared/user.service";
 import { SessionService } from "./shared/session.service";
 import { AuthService } from "./shared/auth.service";
-import { AlertMessageService } from "./shared/alertmessage.service";
 import { MessageService } from "./shared/message.service";
+import { RoomService } from "./shared/room.service";
+
+import { HandleHttpResponseService } from "./shared/util/handleHttpResponse.service";
+import { AlertMessageService } from "./shared/util/alertmessage.service";
 
 import { CanActivateIfGuest } from "./shared/guards/CanActivateIfGuest";
 import { CanActivateIfUser } from "./shared/guards/CanActivateIfUser";
@@ -53,6 +56,8 @@ import { RoomsComponent } from "./rooms/rooms.component";
     AuthService,
     AlertMessageService,
     MessageService,
+    RoomService,
+    HandleHttpResponseService,
     CanActivateIfGuest,
     CanActivateIfUser
   ],
