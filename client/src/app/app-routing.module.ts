@@ -5,6 +5,7 @@ import { RegisterComponent } from "./register/register.component";
 import { CanActivateIfGuest } from "./shared/guards/CanActivateIfGuest";
 import { CanActivateIfUser } from "./shared/guards/CanActivateIfUser";
 import { HomeComponent } from "./home/home.component";
+import { RoomsComponent } from "./rooms/rooms.component";
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/login" },
@@ -22,6 +23,11 @@ const routes: Routes = [
     path: "register",
     component: RegisterComponent,
     canActivate: [CanActivateIfGuest]
+  },
+  {
+    path: "rooms",
+    component: RoomsComponent
+    //everyone can activate
   }
 ];
 
