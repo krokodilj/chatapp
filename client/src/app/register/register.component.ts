@@ -4,7 +4,6 @@ import { AuthService } from "../shared/auth.service";
 import { User } from "../_model/user";
 import { Router } from "@angular/router";
 import { AlertMessageService } from "../shared/alertmessage.service";
-import { FileUploader } from "ng2-file-upload";
 import { Http, Headers } from "@angular/http";
 import { Observable } from "rxjs";
 

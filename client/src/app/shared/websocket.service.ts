@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { Observable, Observer, BehaviorSubject, Subject } from "rxjs";
 import { SessionService } from "./session.service";
 import { AlertMessageService } from "./alertmessage.service";
-import { Message } from "../_model/Message"
 
 @Injectable()
 export class WebSocketService {
@@ -17,42 +16,39 @@ export class WebSocketService {
       this.url + `/?token=${this.sessionService.data.token}`
     );
 
-    this.socket.onopen = this.onOpen.bind(this)
+    this.socket.onopen = this.onOpen.bind(this);
 
-    this.socket.onmessage =this.onMessage.bind(this)
-    
-    this.socket.onerror = this.onError.bind(this)
+    this.socket.onmessage = this.onMessage.bind(this);
 
-    this.socket.onclose = this.onClose.bind(this)
+    this.socket.onerror = this.onError.bind(this);
+
+    this.socket.onclose = this.onClose.bind(this);
   }
 
   disconnect() {
     this.socket.close();
-    this.socket=null;
+    this.socket = null;
   }
 
-  send(data){
-    
-    if(this.socket && this.socket.readyState==1)
-      this.socket.send(data)
+  send(data) {
+    if (this.socket && this.socket.readyState == 1) this.socket.send(data);
   }
 
-  private onOpen(){
+  private onOpen() {
     this.$connection.next(true);
   }
 
-  private onMessage(data){
+  private onMessage(data) {
     //DELETE
-    this.$messaages.next(data)
+    this.$messaages.next(data);
     //TODO parse message and .next subjects
-
   }
 
-  private onError(){
+  private onError() {
     this.alertMsgService.showMessage("Connection Error");
   }
 
-  private onClose(){
+  private onClose() {
     this.$connection.next(false);
   }
 
