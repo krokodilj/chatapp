@@ -4,11 +4,11 @@ import { SessionService } from "../../shared/session.service";
 import { WebSocketService } from "../../shared/websocket.service";
 
 @Component({
-  selector: "app-rooms",
-  templateUrl: "./rooms.component.html",
+  selector: "app-channels",
+  templateUrl: "./channels.component.html",
   styles: []
 })
-export class RoomsComponent implements OnInit {
+export class ChannelsComponent implements OnInit {
   @Input() selectedRoom;
   @Output() change = new EventEmitter<any>();
 

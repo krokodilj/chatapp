@@ -23,8 +23,9 @@ import { HeaderComponent } from "./header/header.component";
 import { RegisterComponent } from "./register/register.component";
 import { AlertmessageComponent } from "./alertmessage/alertmessage.component";
 import { HomeComponent } from "./home/home.component";
-import { RoomsComponent } from "./home/rooms/rooms.component";
+import { ChannelsComponent } from "./home/channels/channels.component";
 import { ScrollEventModule } from "ngx-scroll-event";
+import { RoomsComponent } from "./rooms/rooms.component";
 
 @NgModule({
   imports: [
@@ -41,8 +42,9 @@ import { ScrollEventModule } from "ngx-scroll-event";
     HeaderComponent,
     AlertmessageComponent,
     HomeComponent,
-    RoomsComponent,
-    ChatboxComponent
+    ChannelsComponent,
+    ChatboxComponent,
+    RoomsComponent
   ],
   providers: [
     WebSocketService,

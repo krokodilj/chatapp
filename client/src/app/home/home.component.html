@@ -1,5 +1,5 @@
 
 <div style="padding:10px" fxLayout="row">
-    <app-rooms  fxFlex="40" (change)="roomChange($event)" [selectedRoom]="sharedData" ></app-rooms>
+    <app-channels  fxFlex="40" (change)="roomChange($event)" [selectedRoom]="sharedData" ></app-channels>
     <app-chatbox  fxFlex="60" [selectedRoom]="sharedData"></app-chatbox>
 </div>
