@@ -1,12 +1,11 @@
 const ws = require("ws");
 const url = require("url");
-const redis = require("redis").createClient();
 const jwt = require("./jwt");
 
 const userCtrl = require("../controllers/user.ctrl");
 const roomCtrl = require("../controllers/room.ctrl");
 
-const getConnection = require("./redisClient");
+const getRedisConnection = require("./redisClient");
 
 module.exports = {
   createServer: createServer
@@ -41,9 +40,9 @@ function createServer(server) {
           //check if can send to room
           message.from = userData; //attach
           sendToRoom(message.toId, message); //send
+          let conn = await getRedisConnection(); // get redis connection
+          await conn.lpush(message.to + message.toId, JSON.stringify(message)); //persist message
         }
-        //let conn = await getConnection()
-        //conn.lpush("default",message)
       } catch (err) {
         console.log(err);
       }

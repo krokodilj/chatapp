@@ -17,6 +17,7 @@ app.use("/static", express.static(path.join(__dirname, "../public")));
 
 app.use("/api/user", require("./api/user.api"));
 app.use("/api/room", require("./api/room.api"));
+app.use("/api/message", require("./api/message.api"));
 
 app.use(require("./api/middleware/error"));
 
