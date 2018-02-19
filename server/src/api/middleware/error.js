@@ -19,7 +19,8 @@ function parseErrors(err, req, res, next) {
       .send();
   else {
     //internal server errors
-    console.log("b" + err); //log
+    console.log(err);
+    console.log(JSON.stringify(err)); //log
     res
       .status(500)
       .json("Internal Server Error")

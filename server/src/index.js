@@ -18,6 +18,8 @@ app.use("/static", express.static(path.join(__dirname, "../public")));
 app.use("/api/user", require("./api/user.api"));
 app.use("/api/room", require("./api/room.api"));
 app.use("/api/message", require("./api/message.api"));
+app.use("/api/contact", require("./api/contact.api"));
+app.use("/api/request", require("./api/request.api"));
 
 app.use(require("./api/middleware/error"));
 
