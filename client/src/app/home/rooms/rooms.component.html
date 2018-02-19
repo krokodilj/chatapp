@@ -14,7 +14,9 @@
     <h2>rooms:</h2>
     <mat-divider></mat-divider>
     <mat-list>
-        <mat-list-item *ngFor="let m of rooms" (click) = "switch(m)" >
+        <mat-list-item 
+            *ngFor="let m of rooms" 
+            (click) = "switch(m)" >
             <h3 matLine>{{m.name}}</h3>
             <span>{{m.br}}</span>
         </mat-list-item>

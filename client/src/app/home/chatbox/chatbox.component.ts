@@ -1,6 +1,16 @@
-import { Component, OnInit, Input, OnChanges } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  AfterViewInit,
+  ElementRef,
+  ViewChild
+} from "@angular/core";
 import { WebSocketService } from "../../shared/websocket.service";
 import { Subject } from "rxjs/Subject";
+import { MessageService } from "../../shared/message.service";
+import { ScrollEvent } from "ngx-scroll-event";
 
 @Component({
   selector: "app-chatbox",
@@ -9,10 +19,11 @@ import { Subject } from "rxjs/Subject";
 })
 export class ChatboxComponent implements OnInit, OnChanges {
   @Input() selectedRoom;
+  @ViewChild("messagebox") messagebox: ElementRef;
   message: String = "";
   messages = [];
-
-  persist = {};
+  page = 0;
+  scrollEventHandleInProgress = false;
 
   private send(message: String): void {
     if (this.message.length != 0 && this.selectedRoom.id) {
@@ -28,7 +39,23 @@ export class ChatboxComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor(private ws: WebSocketService) {}
+  constructor(
+    private ws: WebSocketService,
+    private messageService: MessageService
+  ) {}
+
+  handleScroll(event) {
+    if (event.isReachingBottom && !this.scrollEventHandleInProgress) {
+      this.scrollEventHandleInProgress = true;
+      this.messageService
+        .getRoomMessages(this.selectedRoom.id, this.page)
+        .then(val => {
+          this.messages = this.messages.concat(val.json());
+          this.page++;
+          this.scrollEventHandleInProgress = false;
+        });
+    }
+  }
 
   ngOnInit() {
     this.ws.$messaages.subscribe(this.subscription.onNext);
@@ -37,25 +64,21 @@ export class ChatboxComponent implements OnInit, OnChanges {
   ngOnChanges(changes) {
     let prev = changes.selectedRoom.previousValue;
     let curr = changes.selectedRoom.currentValue;
-    if (prev)
-      if (prev.id) {
-        this.persist[prev.id] = this.messages;
-      }
-    if (curr.id) {
-      this.messages = this.persist[curr.id] ? this.persist[curr.id] : [];
+    if (prev && curr.id) {
+      this.page = 0;
+      this.messageService.getRoomMessages(curr.id, this.page).then(val => {
+        this.messages = val.json();
+        this.page++;
+      });
     }
   }
 
   private subscription = {
     onNext: (msgEvt: any): void => {
       let data = JSON.parse(msgEvt.data);
-      if (data.toId == this.selectedRoom.id) this.messages.unshift(data);
-      else {
-        if (Object.keys(this.persist).includes(String(data.toId)))
-          this.persist[data.toId].unshift(data);
-        else {
-          this.persist[data.toId] = [data];
-        }
+      if (data.toId == this.selectedRoom.id) {
+        this.messagebox.nativeElement.scrollTop = 0;
+        this.messages.unshift(data);
       }
     }
   };

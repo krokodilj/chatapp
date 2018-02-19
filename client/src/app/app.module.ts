@@ -12,6 +12,7 @@ import { UserService } from "./shared/user.service";
 import { SessionService } from "./shared/session.service";
 import { AuthService } from "./shared/auth.service";
 import { AlertMessageService } from "./shared/alertmessage.service";
+import { MessageService } from "./shared/message.service";
 
 import { CanActivateIfGuest } from "./shared/guards/CanActivateIfGuest";
 import { CanActivateIfUser } from "./shared/guards/CanActivateIfUser";
@@ -23,6 +24,7 @@ import { RegisterComponent } from "./register/register.component";
 import { AlertmessageComponent } from "./alertmessage/alertmessage.component";
 import { HomeComponent } from "./home/home.component";
 import { RoomsComponent } from "./home/rooms/rooms.component";
+import { ScrollEventModule } from "ngx-scroll-event";
 
 @NgModule({
   imports: [
@@ -30,7 +32,8 @@ import { RoomsComponent } from "./home/rooms/rooms.component";
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    ScrollEventModule
   ],
   declarations: [
     AppComponent,
@@ -47,6 +50,7 @@ import { RoomsComponent } from "./home/rooms/rooms.component";
     SessionService,
     AuthService,
     AlertMessageService,
+    MessageService,
     CanActivateIfGuest,
     CanActivateIfUser
   ],

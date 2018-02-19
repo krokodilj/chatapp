@@ -1,13 +1,30 @@
 <div fxLayout="column" style="padding:10px">
-    <h3>Connected to room >> {{selectedRoom.name}}</h3>
-
+    <div>
+        <span fxFlex="50"></span>
+        <h3>{{selectedRoom.name}}</h3>
+        <span fxFlex="50"></span>
+    </div>
     <mat-form-field style="border-style:solid" >
-        <textarea matInput [(ngModel)] = "message" [disabled]="(!(ws.$connection | async) || !selectedRoom.id)" style="padding:10px" ></textarea>
+        <textarea 
+            matInput 
+            [(ngModel)] = "message" 
+            [disabled] = "(!(ws.$connection | async) || !selectedRoom.id)" 
+            style = "padding:10px" >
+        </textarea>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="send(message)" [disabled]="(!(ws.$connection | async)  || (!selectedRoom.id))">send</button>
-
+    <button 
+        mat-raised-button color="primary" 
+        (click)="send(message)" 
+        [disabled]="(!(ws.$connection | async)  || (!selectedRoom.id))">
+        send
+    </button>
     <mat-divider></mat-divider>
-    <div style="height:400px; overflow-y:scroll">
+    <div 
+        detect-scroll 
+        (onScroll)="handleScroll($event)" 
+        [bottomOffset]="5" 
+        [topOffset]="5" 
+        style="height:300px; overflow-y:scroll"#messagebox>
         <mat-list>
             <mat-list-item *ngFor="let m of messages">
                 <img matListAvatar [src]="'/static/'+m.from.avatar" >
