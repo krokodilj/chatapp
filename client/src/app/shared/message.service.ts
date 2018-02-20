@@ -1,6 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Observable, Observer } from "rxjs";
-import { SessionData } from "../_model/sessionData";
 import { Http } from "@angular/http";
 
 @Injectable()

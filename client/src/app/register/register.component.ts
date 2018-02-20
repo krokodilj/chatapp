@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "../shared/user.service";
 import { AuthService } from "../shared/auth.service";
-import { User } from "../_model/user";
+import { User } from "../model/user";
 import { Router } from "@angular/router";
 import { AlertMessageService } from "../shared/util/alertmessage.service";
 import { Http, Headers } from "@angular/http";
@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit {
   async finish() {
     try {
       await this.authService.authenticate(this.user);
-      this.router.navigate(["/chat"]);
+      this.router.navigate(["/home"]);
     } catch (err) {
       this.alertMsgService.showResponseMessage(err);
     }

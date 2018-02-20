@@ -8,7 +8,7 @@ export class CanActivateIfGuest implements CanActivate {
 
   canActivate() {
     if (this.sessionService.data.token != null) {
-      this.router.navigate(["/chat"]);
+      this.router.navigate(["/home"]);
       return false;
     }
     return true;

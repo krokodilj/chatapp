@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { WebSocketService } from "../shared/websocket.service";
 import { Subject } from "rxjs/Subject";
 import { Router } from "@angular/router";
-import { User } from "../_model/user";
+import { User } from "../model/user";
 import { AuthService } from "../shared/auth.service";
 import { AlertMessageService } from "../shared/util/alertmessage.service";
 
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   async login(loginData: User) {
     try {
       await this.authService.authenticate(loginData);
-      this.router.navigate(["/chat"]);
+      this.router.navigate(["/home"]);
     } catch (err) {
       this.alertMsgService.showResponseMessage(err);
     }

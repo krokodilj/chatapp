@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, Observer } from "rxjs";
-import { SessionData } from "../_model/sessionData";
+import { SessionData } from "../model/sessionData";
 
 @Injectable()
 export class SessionService {
