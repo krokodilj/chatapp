@@ -30,6 +30,7 @@ import { ChannelsComponent } from "./home/channels/channels.component";
 import { ScrollEventModule } from "ngx-scroll-event";
 import { RoomsComponent } from "./rooms/rooms.component";
 import { CreateRoomComponent } from "./createRoom/createRoom.component";
+import { RoomRequestServiceService } from "./shared/roomRequest.service";
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { CreateRoomComponent } from "./createRoom/createRoom.component";
     RoomService,
     HandleHttpResponseService,
     CanActivateIfGuest,
-    CanActivateIfUser
+    CanActivateIfUser,
+    RoomRequestServiceService
   ],
   bootstrap: [AppComponent]
 })

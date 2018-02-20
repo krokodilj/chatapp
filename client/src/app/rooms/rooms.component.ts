@@ -3,6 +3,8 @@ import { RoomService } from "../shared/room.service";
 import { Room } from "../model/Room";
 import { AlertMessageService } from "../shared/util/alertmessage.service";
 import { Router } from "@angular/router";
+import { RoomRequestServiceService } from "../shared/roomRequest.service";
+import { SessionService } from "../shared/session.service";
 
 @Component({
   selector: "app-rooms",
@@ -14,6 +16,8 @@ export class RoomsComponent implements OnInit {
 
   constructor(
     private roomService: RoomService,
+    private roomRequestService: RoomRequestServiceService,
+    private sessionService: SessionService,
     private alertMessageService: AlertMessageService,
     private router: Router
   ) {}
@@ -26,7 +30,8 @@ export class RoomsComponent implements OnInit {
     try {
       if (room.closed) {
         //TODO request to room
-        this.alertMessageService.showMessage("not implemented");
+        let id = await this.roomRequestService.createRequest(room.id);
+        this.alertMessageService.showMessage(id);
       } else {
         await this.roomService.joinRoom(room.id);
         this.alertMessageService.showMessage("succesfully joined");

@@ -30,6 +30,11 @@ router.post(
 router.get("/", async (req, res, next) => {
   try {
     let rooms = await roomCtrl.getAll();
+    for (let room of rooms) {
+      let users = await roomCtrl.getRoomUsers(room.id);
+      let userIds = users.map(e => e.id);
+      room.users = userIds;
+    }
     res.status(200).json(rooms);
   } catch (err) {
     next(err);
@@ -61,8 +66,14 @@ router.post("/:id/join", isAuthenticated, async (req, res, next) => {
   try {
     let roomId = req.params.id;
     let userId = req.user.id;
+    let roomUsers = await roomCtrl.getRoomUsers(roomId);
+    roomUsersIds = roomUsers.map(e => {
+      return e.id;
+    });
     let room = await roomCtrl.getOne(roomId);
     if (!room) res.status(404).json("Room not found");
+    else if (roomUsersIds.includes(userId))
+      res.status(409).json("Already in this room");
     else if (room.closed)
       res.status(403).json("Room closed.Can not join via this method");
     else {

@@ -5,11 +5,17 @@
         </mat-card-title>
     
         <mat-card-content>
+            <span>connected users : {{room.users.length}} </span>
+            <br>
             <mat-checkbox disabled [(ngModel)]="!room.closed" >{{ room.closed? 'closed' : 'open'}}</mat-checkbox>
         </mat-card-content>
     
         <mat-card-actions >
-            <button mat-raised-button color="primary" (click)="join(room)" >join</button>
+            <button mat-raised-button color="primary" #el
+                (click)="join(room)" 
+                [disabled]="room.users.includes(sessionService.data.id)">
+                {{ el.disabled ? 'joined' : 'join'}}
+            </button>
         </mat-card-actions>
     
       </mat-card> 

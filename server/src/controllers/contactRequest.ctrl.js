@@ -5,9 +5,7 @@ module.exports = {
   getByUsers: getByUsers,
   getAllByUser: getAllByUser,
   createContactRequest: createContactRequest,
-  resolveContactRequest: resolveContactRequest,
-  createRoomRequest: createRoomRequest,
-  resolveRoomRequest: resolveRoomRequest
+  resolveContactRequest: resolveContactRequest
 };
 
 async function getOne(id) {
@@ -52,17 +50,5 @@ async function resolveContactRequest(id, status) {
     status,
     id
   ]);
-  connection.close();
-}
-
-async function createRoomRequest() {
-  let connection = await getConnection();
-  //TODO
-  connection.close();
-}
-
-async function resolveRoomRequest() {
-  let connection = await getConnection();
-  //TODO
   connection.close();
 }
