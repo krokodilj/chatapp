@@ -57,4 +57,21 @@ router.get("/:id/users", validate(schema.getRoom), async (req, res, next) => {
   }
 });
 
+router.post("/:id/join", isAuthenticated, async (req, res, next) => {
+  try {
+    let roomId = req.params.id;
+    let userId = req.user.id;
+    let room = await roomCtrl.getOne(roomId);
+    if (!room) res.status(404).json("Room not found");
+    else if (room.closed)
+      res.status(403).json("Room closed.Can not join via this method");
+    else {
+      await roomCtrl.addUserToRoom(userId, roomId);
+      return res.status(200).json("ok");
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

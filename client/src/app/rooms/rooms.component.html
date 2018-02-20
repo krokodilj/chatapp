@@ -1,1 +1,16 @@
-{{rooms}}
+<div class="container" fxLayout="row">
+    <mat-card class="content"*ngFor="let room of rooms">  
+        <mat-card-title >
+          <span>{{room.name}}</span>
+        </mat-card-title>
+    
+        <mat-card-content>
+            <mat-checkbox disabled [(ngModel)]="!room.closed" >{{ room.closed? 'closed' : 'open'}}</mat-checkbox>
+        </mat-card-content>
+    
+        <mat-card-actions >
+            <button mat-raised-button color="primary" (click)="join(room)" >join</button>
+        </mat-card-actions>
+    
+      </mat-card> 
+</div>

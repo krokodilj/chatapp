@@ -29,4 +29,14 @@ export class RoomService {
       .then(this.handleResponse.extractJSON)
       .catch(this.handleResponse.error);
   }
+
+  joinRoom(roomId): Promise<any> {
+    let headers = new Headers({ "Auth-Token": this.sessionService.data.token });
+    headers.append("Content-Type", "application/json");
+    return this.http
+      .post("/api/room/" + roomId + "/join", {}, { headers: headers })
+      .toPromise()
+      .then(this.handleResponse.extractJSON)
+      .catch(this.handleResponse.error);
+  }
 }
