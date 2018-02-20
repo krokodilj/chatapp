@@ -1,0 +1,23 @@
+<div class="container">
+
+    <mat-card class="content">
+  
+      <mat-card-title >
+        <span>Create Room</span>
+      </mat-card-title>
+  
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput placeholder="enter room name" [(ngModel)]="room.name">
+        </mat-form-field>
+        <label>ask for a request before joining</label><br>
+        <mat-checkbox [(ngModel)]="room.closed">yes</mat-checkbox>
+      </mat-card-content>
+  
+      <mat-card-actions >
+          <button mat-raised-button color="primary" (click)="create(room)" >create</button>
+      </mat-card-actions>
+  
+    </mat-card>
+  
+  </div>

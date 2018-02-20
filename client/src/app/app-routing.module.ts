@@ -6,6 +6,7 @@ import { CanActivateIfGuest } from "./shared/guards/CanActivateIfGuest";
 import { CanActivateIfUser } from "./shared/guards/CanActivateIfUser";
 import { HomeComponent } from "./home/home.component";
 import { RoomsComponent } from "./rooms/rooms.component";
+import { CreateRoomComponent } from "./createRoom/createRoom.component";
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/login" },
@@ -15,7 +16,7 @@ const routes: Routes = [
     canActivate: [CanActivateIfGuest]
   },
   {
-    path: "chat",
+    path: "home",
     component: HomeComponent,
     canActivate: [CanActivateIfUser]
   },
@@ -28,6 +29,11 @@ const routes: Routes = [
     path: "rooms",
     component: RoomsComponent
     //everyone can activate
+  },
+  {
+    path: "create_room",
+    component: CreateRoomComponent,
+    canActivate: [CanActivateIfUser]
   }
 ];
 

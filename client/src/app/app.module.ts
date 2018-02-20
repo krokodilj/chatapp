@@ -29,6 +29,7 @@ import { HomeComponent } from "./home/home.component";
 import { ChannelsComponent } from "./home/channels/channels.component";
 import { ScrollEventModule } from "ngx-scroll-event";
 import { RoomsComponent } from "./rooms/rooms.component";
+import { CreateRoomComponent } from "./createRoom/createRoom.component";
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { RoomsComponent } from "./rooms/rooms.component";
     HomeComponent,
     ChannelsComponent,
     ChatboxComponent,
-    RoomsComponent
+    RoomsComponent,
+    CreateRoomComponent
   ],
   providers: [
     WebSocketService,

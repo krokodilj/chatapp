@@ -5,7 +5,8 @@ module.exports = {
   getAll: getAll,
   getOne: getOne,
   getOneByName: getOneByName,
-  getRoomUsers: getRoomUsers
+  getRoomUsers: getRoomUsers,
+  addUserToRoom: addUserToRoom
 };
 
 async function save(room) {
@@ -47,4 +48,15 @@ async function getRoomUsers(id) {
   );
   connection.close();
   return rows;
+}
+
+async function addUserToRoom(userId, roomId) {
+  let connection = await getConnection();
+  let data = {
+    user_id: userId,
+    room_id: roomId
+  };
+  let rows = await connection.query("insert into user_room set ?", data);
+  connection.close();
+  return rows.insertId;
 }

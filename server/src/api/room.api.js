@@ -11,11 +11,14 @@ router.post(
   isAuthenticated,
   async (req, res, next) => {
     try {
+      let userId = req.user.id;
       let room = req.body;
+      room.owner = userId;
       let room2 = await roomCtrl.getOneByName(room.name);
       if (room2) res.status(409).json("Room name already in use");
       else {
         let roomId = await roomCtrl.save(room);
+        await roomCtrl.addUserToRoom(userId, roomId);
         res.status(200).json(roomId);
       }
     } catch (err) {

@@ -11,7 +11,8 @@ import {
   MatListModule,
   MatSidenavModule,
   MatDividerModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatCheckboxModule
 } from "@angular/material";
 
 import {
@@ -36,7 +37,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatSidenavModule,
     MatDividerModule,
     MatSlideToggleModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatCheckboxModule
   ],
   exports: [
     MatButtonModule,
@@ -52,7 +54,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatSidenavModule,
     MatDividerModule,
     MatSlideToggleModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatCheckboxModule
   ]
 })
 export class MaterialModule {}
