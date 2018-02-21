@@ -20,7 +20,7 @@ async function handleRoomMessage(message, sockets) {
 
   if (userRoomsIds.includes(message.roomId)) {
     for (let socket of sockets) {
-      if (roomUsersIds.includes(message.from.id))
+      if (roomUsersIds.includes(socket.upgradeReq.userData.id))
         socket.send(JSON.stringify(message));
     }
   }
