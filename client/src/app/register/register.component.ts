@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "../shared/user.service";
-import { AuthService } from "../shared/auth.service";
+import { AuthService } from "../shared/auth/auth.service";
 import { User } from "../model/user";
 import { Router } from "@angular/router";
 import { AlertMessageService } from "../shared/util/alertmessage.service";

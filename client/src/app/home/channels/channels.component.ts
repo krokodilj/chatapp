@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { UserService } from "../../shared/user.service";
-import { SessionService } from "../../shared/session.service";
+import { SessionService } from "../../shared/auth/session.service";
 import { WebSocketService } from "../../shared/websocket.service";
 
 @Component({

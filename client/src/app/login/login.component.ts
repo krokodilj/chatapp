@@ -3,7 +3,7 @@ import { WebSocketService } from "../shared/websocket.service";
 import { Subject } from "rxjs/Subject";
 import { Router } from "@angular/router";
 import { User } from "../model/user";
-import { AuthService } from "../shared/auth.service";
+import { AuthService } from "../shared/auth/auth.service";
 import { AlertMessageService } from "../shared/util/alertmessage.service";
 
 @Component({

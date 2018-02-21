@@ -9,8 +9,8 @@ import { AppRoutingModule } from "./app-routing.module";
 
 import { WebSocketService } from "./shared/websocket.service";
 import { UserService } from "./shared/user.service";
-import { SessionService } from "./shared/session.service";
-import { AuthService } from "./shared/auth.service";
+import { SessionService } from "./shared/auth/session.service";
+import { AuthService } from "./shared/auth/auth.service";
 import { MessageService } from "./shared/message.service";
 import { RoomService } from "./shared/room.service";
 

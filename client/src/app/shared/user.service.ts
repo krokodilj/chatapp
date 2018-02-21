@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Headers, Response } from "@angular/http";
 import { User } from "../model/user";
-import { SessionService } from "./session.service";
+import { SessionService } from "./auth/session.service";
 import { HandleHttpResponseService } from "./util/handleHttpResponse.service";
 
 @Injectable()

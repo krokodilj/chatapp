@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { SessionService } from "../shared/session.service";
+import { SessionService } from "../shared/auth/session.service";
 import { WebSocketService } from "../shared/websocket.service";
-import { AuthService } from "../shared/auth.service";
+import { AuthService } from "../shared/auth/auth.service";
 import { Router } from "@angular/router";
 
 @Component({

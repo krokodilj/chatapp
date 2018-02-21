@@ -4,7 +4,7 @@ import { Room } from "../model/Room";
 import { AlertMessageService } from "../shared/util/alertmessage.service";
 import { Router } from "@angular/router";
 import { RoomRequestServiceService } from "../shared/roomRequest.service";
-import { SessionService } from "../shared/session.service";
+import { SessionService } from "../shared/auth/session.service";
 
 @Component({
   selector: "app-rooms",

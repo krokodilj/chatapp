@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router, CanActivate } from "@angular/router";
-import { SessionService } from "../session.service";
+import { SessionService } from "../auth/session.service";
 
 @Injectable()
 export class CanActivateIfUser implements CanActivate {
