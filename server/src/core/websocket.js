@@ -3,9 +3,7 @@ const url = require("url");
 const jwt = require("./jwt");
 
 const userCtrl = require("../controllers/user.ctrl");
-const roomCtrl = require("../controllers/room.ctrl");
-
-const getRedisConnection = require("./redisClient");
+const websocketCtrl = require("../controllers/websocket.ctrl");
 
 module.exports = {
   createServer: createServer
@@ -18,8 +16,7 @@ function createServer(server) {
   });
 
   wss.on("connection", socket => {
-    let userData = socket.upgradeReq.userData;
-    socket.userData = userData;
+    const userData = socket.upgradeReq.userData;
 
     //send connected_user notification
     let message = {
@@ -27,59 +24,48 @@ function createServer(server) {
       type: "notification",
       text: "connected_user"
     };
-    broadcastMessage(message);
-    console.log(`user connected id=${userData.username}`);
+    websocketCtrl.broadcastMessage(message, wss.clients);
 
-    //EVENTS
-    socket.on("message", async message_string => {
+    socket.on("message", async _message => {
       try {
-        let message = JSON.parse(message_string);
-        let userRooms = await userCtrl.getUserRooms(socket.userData.id);
-        let userRoomsIds = userRooms.map(e => e.id);
-        if (userRoomsIds.includes(message.toId)) {
-          //check if can send to room
-          message.from = userData; //attach
-          sendToRoom(message.toId, message); //send
-          let conn = await getRedisConnection(); // get redis connection
-          await conn.lpush(message.to + message.toId, JSON.stringify(message)); //persist message
+        let message = JSON.parse(_message);
+        message.from = userData;
+        switch (message.type) {
+          case "room": {
+            await websocketCtrl.handleRoomMessage(message, wss.clients);
+            break;
+          }
+
+          case "contact": {
+            websocketCtrl.handleContactMesage();
+            break;
+          }
+
+          default: {
+            socket.send("error");
+            break;
+          }
         }
       } catch (err) {
-        console.log(err);
+        console.log("handled" + err);
+        socket.send("error");
       }
     });
 
-    socket.on("close", p => {
+    socket.on("close", _ => {
       let message = {
         from: userData,
         type: "notification",
         text: "disconnected_user"
       };
-      broadcastMessage(message);
-      console.log(`user disconnected id=${userData.username}`);
+      websocketCtrl.broadcastMessage(message, wss.clients);
     });
 
-    socket.on("error", e => {
-      console.log("socketerror : " + e);
+    socket.on("error", err => {
+      console.log("socketerror : " + err);
+      socket.send("error");
     });
   });
-
-  function broadcastMessage(message) {
-    for (let socket of wss.clients) {
-      socket.send(JSON.stringify(message));
-    }
-  }
-
-  async function sendToRoom(roomId, message) {
-    let roomUsers = await roomCtrl.getRoomUsers(roomId);
-    let roomUsersIds = roomUsers.map(e => e.id);
-    //TODO if room persists messages log message
-    for (let socket of wss.clients) {
-      //iterate connected websockets
-      if (roomUsersIds.includes(socket.userData.id))
-        //if user socket is in room
-        socket.send(JSON.stringify(message)); //send
-    }
-  }
 }
 
 function verifyClients(info, cb) {

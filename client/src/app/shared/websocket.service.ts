@@ -6,10 +6,19 @@ import { AlertMessageService } from "./util/alertmessage.service";
 @Injectable()
 export class WebSocketService {
   public $connection: BehaviorSubject<Boolean>;
-  public $notifications: Subject<Notification>;
-  public $messaages: Subject<String>;
+  public $notifications: Subject<any>;
+  public $messages: Subject<any>;
   private socket: WebSocket;
   private url = "ws://localhost:3001";
+
+  constructor(
+    private sessionService: SessionService,
+    private alertMsgService: AlertMessageService
+  ) {
+    this.$connection = new BehaviorSubject(false);
+    this.$messages = new Subject<any>();
+    this.$notifications = new Subject<any>();
+  }
 
   connect() {
     this.socket = new WebSocket(
@@ -38,10 +47,11 @@ export class WebSocketService {
     this.$connection.next(true);
   }
 
-  private onMessage(data) {
-    //DELETE
-    this.$messaages.next(data);
-    //TODO parse message and .next subjects
+  private onMessage(messageEvent) {
+    let message = JSON.parse(messageEvent.data);
+    if (message.type == "room" || message.type == "contact")
+      this.$messages.next(message);
+    else if (message.type == "notification") this.$notifications.next(message);
   }
 
   private onError() {
@@ -50,13 +60,5 @@ export class WebSocketService {
 
   private onClose() {
     this.$connection.next(false);
-  }
-
-  constructor(
-    private sessionService: SessionService,
-    private alertMsgService: AlertMessageService
-  ) {
-    this.$connection = new BehaviorSubject(false);
-    this.$messaages = new Subject();
   }
 }

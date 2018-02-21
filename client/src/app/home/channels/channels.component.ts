@@ -24,8 +24,7 @@ export class ChannelsComponent implements OnInit {
     this.userService.getUserRooms(this.sessionService.data.id).then(val => {
       this.rooms = val;
     });
-    this.ws.$messaages.subscribe((msgEvt: any): void => {
-      let data = JSON.parse(msgEvt.data);
+    this.ws.$messages.subscribe(data => {
       if (data.toId && data.toId != this.selectedRoom.id) {
         let room = this.rooms.filter(e => e.id == data.toId);
         if (!room[0].br) room[0].br = 0;

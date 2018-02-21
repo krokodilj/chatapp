@@ -29,9 +29,8 @@ export class ChatboxComponent implements OnInit, OnChanges {
     if (this.message.length != 0 && this.selectedRoom.id) {
       this.ws.send(
         JSON.stringify({
-          type: "message",
-          to: "room",
-          toId: this.selectedRoom.id,
+          type: "room",
+          roomId: this.selectedRoom.id,
           text: message
         })
       );
@@ -58,7 +57,7 @@ export class ChatboxComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.ws.$messaages.subscribe(this.subscription.onNext);
+    this.ws.$messages.subscribe(this.subscription.onNext);
   }
 
   ngOnChanges(changes) {
@@ -74,9 +73,8 @@ export class ChatboxComponent implements OnInit, OnChanges {
   }
 
   private subscription = {
-    onNext: (msgEvt: any): void => {
-      let data = JSON.parse(msgEvt.data);
-      if (data.toId == this.selectedRoom.id) {
+    onNext: data => {
+      if (data.roomId == this.selectedRoom.id) {
         this.messagebox.nativeElement.scrollTop = 0;
         this.messages.unshift(data);
       }
