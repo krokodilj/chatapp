@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { SessionService } from "../shared/session.service";
 import { WebSocketService } from "../shared/websocket.service";
 import { AuthService } from "../shared/auth.service";
@@ -10,6 +10,8 @@ import { Router } from "@angular/router";
   styleUrls: ["./header.component.css"]
 })
 export class HeaderComponent implements OnInit {
+  @Input() sidenav;
+
   constructor(
     private sessionService: SessionService,
     private authService: AuthService,
@@ -28,5 +30,13 @@ export class HeaderComponent implements OnInit {
     this.authService.logOut();
     if (this.ws.$connection.getValue()) this.ws.disconnect();
     this.router.navigate(["/login"]);
+  }
+
+  toggleSidenav() {
+    this.sidenav.toggle();
+  }
+
+  home() {
+    this.router.navigate(["/home"]);
   }
 }

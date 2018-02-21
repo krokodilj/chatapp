@@ -10,7 +10,7 @@ import { Observable } from "rxjs";
 @Component({
   selector: "app-register",
   templateUrl: "./register.component.html",
-  styles: []
+  styleUrls: ["./register.component.css"]
 })
 export class RegisterComponent implements OnInit {
   private user: User = new User();

@@ -13,8 +13,12 @@ export class AlertMessageService {
     this.hidden = false;
   }
 
-  showResponseMessage(message: Response) {
-    this.message = message.json();
+  showResponseMessage(message) {
+    try {
+      this.message = message.json();
+    } catch (e) {
+      this.message = message._body;
+    }
     this.hidden = false;
   }
 

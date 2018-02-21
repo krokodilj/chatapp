@@ -1,5 +1,14 @@
 <mat-toolbar color="primary">
-    <span >chat</span>
+
+    <!--toggle sidenav button -->
+    <button mat-button (click)="toggleSidenav()">
+        <mat-icon class="fa fa-bars" ></mat-icon>
+    </button>
+    
+
+    <!-- home page nav -->
+    <span class="btn" (click)="home()">chat</span>
+
     <span class="spacer"></span>
     <span class="spacer"></span>
     <!-- show if user is logged in -->
